@@ -1,0 +1,42 @@
+<div class="product-card" (click)="openDetail()">
+  <div><span *ngIf="product.isNew" class="badge-new">NUEVO</span></div>
+
+  <div class="image-container">
+    <img [src]="product.imageUrl" [alt]="product.name" />
+  </div>
+
+  <div class="details">
+    <h4 class="brand">{{ product.brand }}</h4>
+    <p class="name">{{ product.name }}</p>
+
+    <div class="price-section">
+      <p *ngIf="product.oldPrice" class="old-price">
+        ${{ product.oldPrice | number: '1.0-0' }}
+      </p>
+      <div class="current">
+        <p class="price">${{ product.price | number: '1.0-0' }}</p>
+        <span *ngIf="product.discount" class="discount">-{{ product.discount }}%</span>
+      </div>
+      <p *ngIf="product.installment" class="installment">{{ product.installment }}</p>
+    </div>
+
+    <!-- Botón inicial -->
+    <div class="quantity-control" (click)="$event.stopPropagation()">
+  <button *ngIf="quantity === 0" class="add-btn-inner" (click)="addToCart()">
+    Agregar
+  </button>
+
+  <ng-container *ngIf="quantity > 0">
+    <button class="minus-btn" (click)="decrease()">−</button>
+    <span class="quantity">{{ quantity }}</span>
+    <button class="plus-btn" (click)="increase()">+</button>
+  </ng-container>
+</div>
+
+    <p *ngIf="product.pricePerLiter" class="price-per-liter">
+      Precio por 1 LT {{ product.pricePerLiter }}
+    </p>
+  </div>
+</div>
+
+<div class="separator"></div>

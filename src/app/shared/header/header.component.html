@@ -1,0 +1,52 @@
+<header class="header">
+    <div class="bar">
+        <button class="menu-button" [class.open]="isSidebarOpen" (click)="toggleSidebar()">
+  <span class="menu-button-line top"></span>
+  <span class="menu-button-line middle"></span>
+  <span class="menu-button-line bottom"></span>
+</button>
+
+        <div class="logo">Tatú</div>
+
+        <div class="icons">
+            <button class="icon-button">
+                <span class="material-symbols-sharp">person_3</span>
+            </button>
+            
+            <button class="icon-button cart-icon" (click)="toggleCartSlide()">
+              <span class="material-symbols-sharp">shopping_cart</span>
+              <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="sub-bar">
+  <div class="carousel-container">
+    <div
+      class="carousel-item"
+      *ngFor="let promo of promos; let i = index"
+      [class.active]="i === currentPromoIndex"
+      [class.prev]="i === (currentPromoIndex === 0 ? promos.length - 1 : currentPromoIndex - 1)"
+    >
+      <span class="material-icons">{{ promo.icon }}</span>
+      <span class="promo-text">{{ promo.text }}</span>
+    </div>
+  </div>
+</div>
+</header>
+
+<!-- Cart Slide Panel -->
+<div class="cart-slide" [class.open]="isCartOpen">
+  <div class="cart-slide-overlay" (click)="closeCartSlide()"></div>
+  <div class="cart-slide-panel">
+    <div class="cart-slide-header">
+      <h2>Tu Carrito</h2>
+      <button class="close-btn" (click)="closeCartSlide()">
+        <span class="material-symbols-sharp">close</span>
+      </button>
+    </div>
+    <div class="cart-slide-content">
+      <app-cart></app-cart>
+    </div>
+  </div>
+</div>

@@ -6,5 +6,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'tatu-tienda-de-vinos';
+  title = 'mi-tienda-de-vinos';
+
+  isSidebarOpen: boolean = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+   onCategorySelected(category: { key: string; name: string }) {
+    console.log('Categoría emitida por sidebar:', category);
+
+    sessionStorage.setItem('selectedCategory', JSON.stringify(category));
+  }
 }

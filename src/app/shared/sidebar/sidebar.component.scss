@@ -1,0 +1,198 @@
+@use 'src/variables' as *;
+
+// ======================
+// 🎨 VARIABLES
+// ======================
+$header-height: 56px;
+$primary-color: #5d0f1e;
+$text-color: #333;
+$secondary-text: #444;
+
+// ======================
+// ⚙️ MIXINS
+// ======================
+@mixin menu-font($size, $weight, $color) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+}
+
+// ======================
+// 🧭 ESTILOS PRINCIPALES
+// ======================
+.sidebar {
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px -2px 7px rgba(0, 0, 0, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  // ======================
+  // 🧩 SECCIONES DEL MENÚ
+  // ======================
+  .menu-section {
+    padding: 15px 5%;
+
+    // 🥂 Tienda
+    &.menu-tienda {
+      .menu-item {
+        @include menu-font(1rem, 700, $secondary-text);
+      }
+    }
+
+    // 🛍️ General
+    &.menu-general {
+      .menu-item {
+        @include menu-font(0.85rem, 600, $primary-color);
+      }
+    }
+  }
+
+  // ======================
+  // 📋 ÍTEMS DEL MENÚ
+  // ======================
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .menu-item {
+      padding: 15px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &.category {
+        font-weight: bold;
+        color: $primary-color;
+      }
+    }
+  }
+
+  // ======================
+  // 🧭 SEPARADOR
+  // ======================
+
+  .separator {
+    height: 1px;
+    background-color: #ddd;
+    margin: 0;
+  }
+
+  // ======================
+  // ➡️ ICONOS
+  // ======================
+  .arrow {
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
+// ======================
+// 🌫️ OVERLAY
+// ======================
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// ======================
+// 🌫️ HEADER
+// ======================
+.sidebar-header{
+  padding: 15px 20px 0px 20px;
+  .back-button {
+  display: flex;
+  align-items: center;
+  gap: 4px; // espacio entre ícono y texto
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #333;
+  padding: 0;
+  font-family: "Be Vietnam Pro", sans-serif;
+  .material-icons {
+    font-size: 14px;
+  }
+
+  &:hover {
+    color: #000;
+  }
+}
+  .sidebar-title{
+    margin-top: 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}
+
+// ======================
+// 🌫️ SUBMENÚ
+// ======================
+
+.sub-menu {
+  padding-top: 0px !important;
+
+  .menu-list {
+    .menu-item {
+      display: flex;
+      align-items: center;           // centra verticalmente
+      justify-content: space-between; // separa texto e ícono
+      gap: 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      .menu-item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .menu-item-text {
+        flex: 1; // ocupa el espacio entre imagen y flecha
+      }
+
+      .arrow {
+        font-size: 22px;
+        flex-shrink: 0;
+        color: $secondary-text;
+      }
+    }
+  }
+}

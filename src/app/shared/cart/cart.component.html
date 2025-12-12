@@ -1,0 +1,61 @@
+<div class="cart">
+  <div *ngIf="cartProducts.length === 0" class="empty-cart">
+    <p>El carrito está vacío.</p>
+  </div>
+
+  <div *ngIf="cartProducts.length > 0" class="cart-list">
+    <div *ngFor="let item of cartProducts" class="cart-item">
+      <!-- Imagen del producto -->
+      <div class="item-image">
+        <img [src]="item.product.imageUrl" [alt]="item.product.name" />
+      </div>
+
+      <!-- Detalles del producto -->
+      <div class="item-details">
+        <h3>{{ item.product.name }}</h3>
+        <div class="price-section">
+          <p *ngIf="item.product.oldPrice" class="old-price">
+            ${{ item.product.oldPrice | number:'1.0-0' }}
+          </p>
+          <p class="price">${{ item.product.price | number:'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <!-- Cantidad y acciones -->
+      <div class="item-quantity">
+        <button class="qty-btn" (click)="decrease(item.product.id)">−</button>
+        <span class="qty-value">{{ item.quantity }}</span>
+        <button class="qty-btn" (click)="increase(item.product.id)">+</button>
+      </div>
+
+      <!-- Eliminar -->
+      <button class="remove-btn" (click)="removeItem(item.product.id)" title="Eliminar del carrito">
+        <span class="material-symbols-sharp">close</span>
+      </button>
+    </div>
+
+    <!-- Desglose de precios -->
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span class="amount">${{ getSubtotal() | number:'1.0-0' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>
+          Envío:
+          <span class="shipping-note" *ngIf="getShippingCost() === 0">(Gratis)</span>
+        </span>
+        <span class="amount" [class.free]="getShippingCost() === 0">
+          ${{ getShippingCost() | number:'1.0-0' }}
+        </span>
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span class="total-amount">${{ getFinalTotal() | number:'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <!-- Botón de checkout -->
+    <button class="checkout-btn">Ir al Carrito Completo</button>
+  </div>
+</div>

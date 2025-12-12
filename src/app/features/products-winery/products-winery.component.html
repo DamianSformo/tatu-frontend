@@ -1,0 +1,23 @@
+<h5>Bodegas / </h5><h5>{{ brandName }}</h5>
+
+<!-- 🔹 Mostrar término de búsqueda si existe -->
+
+<app-search-filter
+
+  [initialCategoryKey]="'wine'"
+  [isCategorySelectionDisabled]="true"
+  [placeholder]="'Buscar en bodega ' + brandName"
+  [products]="products"
+  (applyFilters)="onApplyFilters($event)"
+  (categoryChange)="onCategoryChange($event)"
+  (search)="onApplyFilters({ query: $event, filters: [] })">
+</app-search-filter>
+
+<div *ngIf="searchTerm" >
+<p class="text-gray-600 mb-2">
+  🔍 Término de búsqueda: <strong>{{ searchTerm }}</strong>
+</p>
+
+</div>
+
+<app-product-list [products]="filteredProducts"></app-product-list>

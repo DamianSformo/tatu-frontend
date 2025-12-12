@@ -1,0 +1,54 @@
+<nav class="sidebar" [class.open]="isOpen">
+  <div *ngIf="history.length > 0" class="sidebar-header">
+    <button  class="back-button" (click)="navigateBack()">
+      <span class="material-icons">arrow_back</span> <span>volver</span>
+    </button>
+    <div class="sidebar-title">{{ selectedItem?.name }}</div>
+  </div>
+
+  <ng-container *ngIf="history.length === 0; else subMenuView">
+    
+    <div class="menu-section menu-tienda">
+      <ul class="menu-list">
+        <li *ngFor="let item of menuTienda">
+          <div class="menu-item" (click)="navigateForward(item)">
+            {{ item.name }}
+            <span class="material-icons arrow">chevron_right</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="menu-section menu-general">
+      <ul class="menu-list">
+        <li *ngFor="let item of menuData">
+          <div class="menu-item" (click)="navigateForward(item)">
+            {{ item.name }}
+            <span *ngIf="item.subItems" class="material-icons arrow">chevron_right</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </ng-container>
+
+  <ng-template #subMenuView>
+    <div class="menu-section sub-menu">
+    <ul class="menu-list">
+      <li *ngFor="let item of currentView">
+        <div class="menu-item" (click)="navigateForward(item)">
+  <img 
+    [src]="item.imageUrl" 
+    alt="{{ item.name }}" 
+    class="menu-item-image"
+  />
+  <span class="menu-item-text">{{ item.name }}</span>
+  <span class="material-icons arrow">chevron_right</span>
+</div>
+      </li>
+    </ul>
+    </div>
+  </ng-template>
+</nav>

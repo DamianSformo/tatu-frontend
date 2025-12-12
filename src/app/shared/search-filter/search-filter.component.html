@@ -1,0 +1,226 @@
+<!-- ===== CONTENEDOR PRINCIPAL DE BÚSQUEDA Y FILTROS ===== -->
+<div class="search-filter-container-2">
+  <div class="search-filter-container">
+    
+    <!-- ===== BOTÓN DE FILTROS ===== -->
+    <div class="filter-button">
+      <button (click)="toggleFilters()">
+        <span class="material-icons">filter_list</span>
+      </button>
+    </div>
+
+    <!-- ===== CAJA DE BÚSQUEDA PRINCIPAL ===== -->
+    <div class="search-box">
+      
+      <!-- Icono de búsqueda -->
+      <span class="material-icons search-icon">search</span>
+      
+      <!-- Input de búsqueda -->
+      <input
+        type="text"
+        [(ngModel)]="query"
+        [placeholder]="placeholder"
+        (keyup.enter)="onSearch()" 
+      />
+
+      <!-- ===== SELECTOR DE CATEGORÍA DESPLEGABLE ===== -->
+      <div  *ngIf="!isCategorySelectionDisabled"
+        class="category-dropdown" 
+        [class.active]="showCategory" 
+        (click)="!isCategorySelectionDisabled && toggleCategory()"
+        [class.disabled]="isCategorySelectionDisabled"
+      >
+        {{ initialCategoryName }}
+        <span class="material-icons" >expand_more</span>
+
+        <!-- Panel desplegable de categorías -->
+        <div class="search-and-panel-wrapper">
+          <div class="category-panel" *ngIf="showCategory">
+            <div class="position-content">
+              
+              <!-- Lista de categorías -->
+              <div
+                class="category-item"
+                *ngFor="let c of categories"
+                (click)="selectCategory(c); $event.stopPropagation()"
+                [class.is-selected]="c.key === selectedCategory.key"
+              >
+                {{ c.name }}
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- ===== PANEL DESPLEGABLE DE FILTROS ===== -->
+<div class="filters-panel" *ngIf="showFilters">
+  <div class="filters-content">
+    
+    <!-- Título del panel -->
+    <h3>Filtros</h3>
+
+    <!-- ===== GRUPOS DE FILTROS ===== -->
+    <div *ngFor="let f of activeFilters" class="filter-group">
+
+      <!-- ===== HEADER DEL FILTRO (ACORDEÓN) ===== -->
+      <div class="filter-header" (click)="toggleFilter(f)">
+        <span class="filter-title">{{ f.label }}</span>
+        <span class="material-icons">
+          {{ f.open ? 'expand_less' : 'expand_more' }}
+        </span>
+      </div>
+
+      <!-- ===== RESUMEN DE OPCIONES SELECCIONADAS ===== -->
+      <div class="filter-summary" *ngIf="!f.open && f.value?.length">
+        {{ f.value.join(', ') }}
+      </div>
+
+      <!-- ===== CONTENIDO DEL FILTRO (SE EXPANDE AL HACER CLICK) ===== -->
+      <div class="filter-options" *ngIf="f.open">
+
+        <!-- ===== FILTRO TIPO CHECKBOX (PILLS) ===== -->
+        <div *ngIf="f.type === 'checkbox'" class="checkbox-pills">
+          <div 
+            *ngFor="let opt of f.options" 
+            class="pill" 
+            [class.selected]="f.value.includes(opt)"
+            (click)="toggleOption(f, opt)"
+          >
+            {{ opt }}
+          </div>
+        </div>
+
+        <!-- ===== FILTRO TIPO SELECT CON BÚSQUEDA ===== -->
+        <div *ngIf="f.type === 'select-search'" class="select-search">
+          <div class="options-dropdown" *ngIf="f.open">
+            
+            <!-- Input de búsqueda interno -->
+            <div class="search-box">
+              <span class="material-icons search-icon">search</span>
+              <input
+                type="text"
+                placeholder="Buscar..."
+                [(ngModel)]="f.searchTerm"
+                class="search-input" 
+              />
+            </div>
+
+            <!-- Lista filtrada de opciones con "Ver más" -->
+            <div class="option-item" *ngFor="let opt of ((f.options ?? []) | filter: (f.searchTerm ?? '')) | slice:0:(f.showAllOptions ? (f.options?.length || 0) : 5)">
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="f.value.includes(opt)"
+                  (change)="toggleOption(f, opt)"
+                />
+                <span class="custom-checkbox"></span>
+                <span class="text-checkbox">{{ opt }}</span>
+              </label>
+            </div>
+
+            <!-- Botón Ver más/menos -->
+            <button class="btn-view-more" *ngIf="f.options && f.options.length > 5" (click)="toggleShowAllOptions(f)">
+              {{ f.showAllOptions ? 'Ver menos' : 'Ver más' }}
+            </button>
+            
+          </div>
+        </div>
+
+        <!-- ===== FILTRO TIPO SELECT SIMPLE (IGUAL AL SELECT-SEARCH PERO SIN LUPA) ===== -->
+<div *ngIf="f.type === 'select'" class="select-simple">
+
+  <div class="options-dropdown" *ngIf="f.open">
+
+    <div 
+      class="option-item" 
+      *ngFor="let opt of (f.options ?? []) | slice:0:(f.showAllOptions ? (f.options?.length || 0) : 5)"
+      [class.selected]="f.value.includes(opt)"
+    >
+      <label>
+        <input
+          type="checkbox"
+          [checked]="f.value.includes(opt)"
+          (change)="toggleOption(f, opt)"
+        />
+        <span class="custom-checkbox"></span>
+        <span class="text-checkbox">{{ opt }}</span>
+      </label>
+    </div>
+
+    <!-- Botón Ver más/menos -->
+    <button class="btn-view-more" *ngIf="f.options && f.options.length > 5" (click)="toggleShowAllOptions(f)">
+      {{ f.showAllOptions ? 'Ver menos' : 'Ver más' }}
+    </button>
+
+  </div>
+</div>
+
+
+        <!-- ===== FILTRO DE RANGO DE PRECIO COMPLETO ===== -->
+        <div *ngIf="f.type === 'price-range'" class="range-filter">
+
+          <!-- Histograma de precios -->
+          <div class="price-histogram">
+            <div 
+              *ngFor="let h of f.bars"
+              class="bar"
+              [style.height.%]="h"
+            ></div>
+          </div>
+
+          <!-- Slider doble para rango de precios -->
+          <div class="double-slider">
+            
+            <!-- Control deslizante para precio mínimo -->
+            <input 
+              class="inputote"
+              type="range"
+              [min]="f.min"
+              [max]="f.max"
+              [ngModel]="f.value[0]"
+              (input)="updatePrice(f, 0, $any($event.target).value)"
+            />
+
+            <!-- Control deslizante para precio máximo -->
+            <input 
+              class="inputito"
+              type="range"
+              [min]="f.min"
+              [max]="f.max"
+              [ngModel]="f.value[1]"
+              (input)="updatePrice(f, 1, $any($event.target).value)"
+            />
+            
+          </div>
+
+          <!-- Inputs de precio en formato pill -->
+          <div class="price-inputs">
+            <div class="price-pill">
+              <label>Mínimo</label>
+              <div class="pill-box">${{ f.value[0] }}</div>
+            </div>
+            <div class="price-pill">
+              <label>Máximo</label>
+              <div class="pill-box">${{ f.value[1] }}</div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- ===== BOTONES DE ACCIÓN DEL PANEL ===== -->
+    <div class="filters-actions">
+      <button class="btn-clear" (click)="clearFilters()">Borrar</button>
+      <button class="btn-close" (click)="closeFilters()">Cerrar</button>
+      <button class="btn-apply" (click)="applyFilterChanges()">Aplicar</button>
+    </div>
+    
+  </div>
+</div>

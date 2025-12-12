@@ -1,0 +1,28 @@
+<h5>{{ categoryName }}</h5>
+
+<!-- 🔹 Mostrar término de búsqueda si existe -->
+
+<app-search-filter
+  [categories]="[
+    { key: 'wine', name: 'Vinos' },
+    { key: 'beer', name: 'Cervezas' },
+    { key: 'whisky', name: 'Whiskys' },
+    { key: 'grocery', name: 'Almacén' },
+    { key: 'accessories', name: 'Accesorios' }
+  ]"
+  [initialCategoryKey]="selectedCategoryKey"
+  [initialCategoryName]="categoryName"
+  [products]="products"
+  (applyFilters)="onApplyFilters($event)"
+  (categoryChange)="onCategoryChange($event)"
+  (search)="onApplyFilters({ query: $event, filters: [] })">
+</app-search-filter>
+
+<div *ngIf="searchTerm" >
+<p class="text-gray-600 mb-2">
+  🔍 Término de búsqueda: <strong>{{ searchTerm }}</strong>
+</p>
+
+</div>
+
+<app-product-list [products]="filteredProducts"></app-product-list>

@@ -1,0 +1,182 @@
+@use 'src/variables' as *;
+
+.product-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  margin: 2rem 0 1.8rem 0;
+  width: 100%;
+
+  .image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin-right: 0.8rem;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+
+    .add-btn {
+      align-self: flex-start;
+      background: $primary-color;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 0.4rem 0.6rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $primary-color;
+    border-radius: 20px;
+    width: 100%;
+    padding: 0.4rem 0;
+    transition: all 0.2s ease;
+
+    .add-btn-inner {
+      flex-grow: 1;
+      background: none;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .minus-btn {
+      padding-left: 1rem;
+    }
+
+    .plus-btn {
+      padding-right: 1rem;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .quantity {
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      line-height: 1;
+    }
+  }
+
+    .brand {
+      font-weight: 700;
+      font-size: 0.6rem;
+      line-height: 0.6rem;
+      color: #333;
+      text-transform: uppercase;
+      margin: 0 0 0.3rem 0;
+    }
+
+    .name {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #222;
+      margin: 0;
+    }
+
+    .price-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 0.6rem 0 0.9rem 0;
+
+      .old-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.7rem;
+        margin: 0;
+      }
+
+      .price {
+        font-weight: 700;
+        color: $primary-color;
+        font-size: 1.4rem;
+        margin: 0;
+      }
+
+      .discount {
+        background: $primary-color;
+        color: #fff;
+        font-size: 0.6rem;
+        border-radius: 4px;
+        padding: 2px 6px;
+      }
+    }
+
+    .current {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .installment {
+      font-size: 0.7rem;
+      color: #444;
+      margin: 0;
+    }
+
+    .price-per-liter {
+      font-size: 0.6rem;
+      color: #777;
+      margin: 0.3rem 0 0 0;
+    }
+  }
+}
+
+.badge-new {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: #fff;
+  color: $primary-color;
+  border: 2px solid $primary-color;
+  font-weight: 600;
+  padding: 2px 14px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  z-index: 999;
+}
