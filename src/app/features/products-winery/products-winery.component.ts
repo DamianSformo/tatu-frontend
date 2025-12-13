@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Filter } from '../../shared/search-filter/search-filter.component';
 import { Product, WineProduct, BeerProduct, ListProduct } from '../../shared/models/product.model';
+import { getMockProducts } from '../../shared/mocks/mock-products';
 import { mapToListProduct } from '../../shared/utils/product-mappers';
 import { ActivatedRoute } from '@angular/router';
 
@@ -45,86 +46,27 @@ export class ProductsWineryComponent implements OnInit {
   }
   
     loadProductsByCategory(categoryKey: string) {
+      const allProducts = getMockProducts();
+      let filtered: Product[] = [];
       switch (categoryKey) {
         case 'wine':
-          this.products = this.getWines().map(mapToListProduct);
+          filtered = allProducts.filter(p => p.productType === 'wine');
           break;
         case 'beer':
-          this.products = this.getBeers().map(mapToListProduct);
+          filtered = allProducts.filter(p => p.productType === 'beer');
           break;
         default:
-          this.products = [];
+          filtered = [];
       }
-  
+      // Si hay brandName, filtrar por marca
+      if (this.brandName) {
+        filtered = filtered.filter(p => p.brand && p.brand.toLowerCase() === this.brandName.toLowerCase());
+      }
+      this.products = filtered.map(mapToListProduct);
       this.filteredProducts = [...this.products];
     }
   
-    getWines(): WineProduct[] {
-      return [
-        {
-          id: 1,
-          imageUrl: 'assets/image 12.png',
-          isNew: true,
-          brand: 'CAFAYATE',
-          name: 'Vino Blanco Cafayate 750 ml',
-          price: 7529,
-          installment: '6 cuotas sin interés de $1780,00',
-          rating: 4.8,
-          reviewsCount: 5,
-          pricePerLiter: '$9.010,50',
-          variety: 'Malbec',
-          year: 2022,
-          region: 'Salta',
-          alcohol: 13.5,
-          type: 'Blanco',
-          origin: 'Argentina',
-          productType: "wine",
-        },
-        {
-          id: 2,
-          imageUrl: 'assets/image 12.png',
-          isNew: false,
-          brand: 'CAFAYATE',
-          name: 'Vino Tinto Malbec Cafayate 750 ml',
-          oldPrice: 7529,
-          price: 5029,
-          discount: 15,
-          installment: '6 cuotas sin interés de $1780,00',
-          rating: 4.8,
-          reviewsCount: 5,
-          pricePerLiter: '$9.010,50',
-          variety: 'Malbec',
-          year: 2023,
-          region: 'Salta',
-          alcohol: 13.5,
-          type: 'Tinto',
-          origin: 'Argentina',
-          productType: "wine"
-        }
-      ];
-    }
-  
-    getBeers(): BeerProduct[] {
-      return [
-        {
-          id: 3,
-          imageUrl: 'assets/beer1.png',
-          isNew: true,
-          brand: 'Patagonia',
-          name: 'Cerveza IPA 500 ml',
-          price: 1800,
-          discount: 10,
-          rating: 4.7,
-          reviewsCount: 32,
-          pricePerLiter: '$3.600,00',
-          type: 'IPA',
-          ibu: 45,
-          origin: 'Argentina',
-          container: 'Botella 500ml',
-          productType: 'beer',
-        }
-      ];
-    }
+    // Los métodos getWines y getBeers han sido reemplazados por el uso de getMockProducts() externo.
   
     // 🔹 Se ejecuta solo cuando se presiona “Mostrar productos”
     onApplyFilters(event: { query: string; filters: Filter[] }) {

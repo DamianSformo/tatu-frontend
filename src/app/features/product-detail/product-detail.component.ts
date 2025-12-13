@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Product } from '../../shared/models/product.model';
+import { getMockProducts } from '../../shared/mocks/mock-products';
 import { CartService } from 'src/app/services/cart.service';
 import { Router } from '@angular/router';
 
@@ -154,100 +155,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   // -----------------------
-  // 🔹 MOCK DATA
+  // 🔹 MOCK DATA (EXTERNAL)
   // -----------------------
   loadMockProductById(id: number) {
-    const mockProducts: Product[] = [...this.getWines(), ...this.getBeers()];
+    const mockProducts: Product[] = getMockProducts();
     this.product = mockProducts.find(p => p.id === id);
-  }
-
-  // -----------------------
-  // 🔹 WINES
-  // -----------------------
-  getWines(): Product[] {
-  return [
-    {
-      id: 1,
-      content: 750,
-      unit: 'ml',
-      productType: 'wine',
-      imageUrl: 'assets/image 12.png',
-      isNew: true,
-      brand: 'CAFAYATE',
-      name: 'Vino Blanco Cafayate 750 ml',
-      oldPrice: 7529,
-      price: 5029,
-      discount: 15,
-      installment: '6 cuotas sin interés de $1780,00',
-      rating: 4.8,
-      reviewsCount: 5,
-      pricePerLiter: '$9.010,50',
-      year: 2023,
-      origin: 'Argentina',
-      type: 'Blanco',
-      body: 100,
-      acidity: 50,
-      tannins: 80,
-      sweetness: 10,
-      wineryDescription: 'Testeo de la descripción',
-      maridajes: ['Carnes Rojas', 'Quesos Curados', 'Pastas con Salsa Roja']
-    },
-    {
-      id: 2,
-      content: 750,
-      unit: 'ml',
-      productType: "wine",
-      imageUrl: 'assets/image 12.png',
-      brand: 'CAFAYATE',
-      name: 'Vino Tinto Malbec Cafayate 750 ml',
-      oldPrice: 7529,
-      price: 5029,
-      discount: 15,
-      installment: '6 cuotas sin interés de $1780,00',
-      rating: 4.8,
-      reviewsCount: 5,
-      pricePerLiter: '$9.010,50',
-      variety: 'Malbec',
-      year: 2023,
-      region: 'Salta',
-      alcohol: 13.5,
-      type: 'Tinto',
-      origin: 'Argentina',
-      bodega_id: 1,
-      body: 100,
-      acidity: 50,
-      tannins: 80,
-      sweetness: 10,
-      maridajes: ['Asado', 'Comida Criolla', 'Guisos']
-    }
-  ];
-}
-
-  // -----------------------
-  // 🔹 BEERS
-  // -----------------------
-  getBeers(): Product[] {
-    return [
-      {
-  id: 3,
-  content: 500,
-  unit: 'ml',
-  productType: 'beer',
-  imageUrl: 'assets/beer1.png',
-  isNew: true,
-  brand: 'Patagonia',
-  name: 'Cerveza IPA 500 ml',
-  price: 1800,
-  discount: 10,
-  rating: 4.7,
-  reviewsCount: 32,
-  pricePerLiter: '$3.600,00',
-  origin: 'Argentina',
-  type: 'IPA',
-  ibu: 45,
-  container: 'Botella'
-}
-
-    ];
   }
 }

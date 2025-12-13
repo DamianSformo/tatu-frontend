@@ -26,7 +26,6 @@ export interface BaseProduct {
 /*      WINE PRODUCT      */
 /* ---------------------- */
 export interface WineProduct extends BaseProduct {
-  
   productType: "wine";
   bodega_id?: number;
   type?: string;
@@ -37,13 +36,18 @@ export interface WineProduct extends BaseProduct {
   wineryDescription?: string;
   maridajes?: string[];
   body?: number; 
-  bodyLabel?: string; 
+  bodyLabel?: string;
   acidity?: number;
   acidityLabel?: string;
   tannins?: number;
   tanninsLabel?: string;
   sweetness?: number;
   sweetnessLabel?: string;
+  color?: string;
+  aroma?: string;
+  gusto?: string;
+  barrica?: string;
+  servicio?: string;
 }
 
 /* ---------------------- */
