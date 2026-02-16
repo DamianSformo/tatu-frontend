@@ -1,0 +1,240 @@
+@import '../../../_variables.scss';
+
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+
+.purchases {
+  padding: 1.5rem 5%;
+  background: $background-color;
+  color: $text-color;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  position: relative;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin-bottom: 95px;
+  min-height: 100vh;
+}
+
+.purchases__top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-color;
+    line-height: 1.2;
+  }
+
+  span {
+    margin: 0;
+    color: $primary-color;
+    font-size: 0.95rem;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+}
+
+.purchases__back {
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+  margin-bottom: 0.6rem;
+  color: $primary-color;
+  font-weight: 600;
+
+  ::ng-deep lucide-icon svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke-width: 2.5 !important;
+  }
+}
+
+.purchases__list {
+  display: grid;
+  gap: $spacing-md;
+}
+
+.purchases__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem 1.2rem 1.25rem 1.2rem;
+  border-radius: $border-radius;
+  background: $background-color;
+  border: 1px solid rgba($primary-color, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.08);
+  }
+}
+
+.purchases__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: $secondary-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary-color;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+
+  lucide-icon {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke-width: 2;
+    }
+  }
+}
+
+.purchases__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.purchases__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.purchases__id {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $text-color;
+}
+
+.purchases__status {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: $border-radius;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.purchases__status--entregado {
+  background: rgba(22, 163, 74, 0.12);
+  color: #166534;
+}
+
+.purchases__status--en_camino {
+  background: rgba(14, 116, 144, 0.12);
+  color: #0e7490;
+}
+
+.purchases__status--preparando {
+  background: rgba(234, 179, 8, 0.14);
+  color: #b45309;
+}
+
+.purchases__meta {
+  margin: 0;
+  color: $primary-color;
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+.purchases__eta {
+  margin: 0;
+  color: $text-color;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.purchases__address {
+  margin: 0;
+  color: $primary-color;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.purchases__payment {
+  margin: 0;
+  color: $primary-color;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.purchases__actions {
+  display: grid;
+  justify-items: end;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.purchases__actions .ghost {
+  background: transparent;
+  border: 1px solid rgba($primary-color, 0.3);
+  color: $text-color;
+  border-radius: $border-radius;
+  padding: 0.45rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba($primary-color, 0.08);
+    transform: translateY(-1px);
+  }
+}
+
+.purchases__chevron {
+  color: $primary-color;
+  opacity: 0.3;
+
+  lucide-icon {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke-width: 3;
+    }
+  }
+}
+
+.purchases__empty {
+  color: $primary-color;
+  opacity: 0.6;
+  text-align: center;
+  padding: $spacing-lg;
+}
+
+@media (max-width: 600px) {
+  .purchases {
+    padding: 1.25rem 1rem 2.25rem;
+  }
+
+  .purchases__item {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .purchases__actions {
+    justify-items: start;
+  }
+}

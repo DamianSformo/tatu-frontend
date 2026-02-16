@@ -20,6 +20,11 @@ export class ProductsWineryComponent implements OnInit {
       // 🔹 Nuevo: guarda el término de búsqueda
     searchTerm: string = '';
 
+  // Devuelve el breadcrumb como HTML seguro, asegurando los espacios alrededor de Vinos
+  getBreadcrumb(): string {
+    return `Bebidas &gt; <a href=\"/bebidas/vinos\" class=\"plain-link\">&nbsp;Vinos&nbsp;</a> &gt; Bodega ${this.brandName}`;
+  }
+
      constructor(private route: ActivatedRoute) {}
   
     ngOnInit(): void {
@@ -87,6 +92,9 @@ export class ProductsWineryComponent implements OnInit {
       // 🔸 Aplicación de filtros
       filters.forEach(f => {
         switch (f.key) {
+          case 'order':
+            // Ordenamiento se aplica después de filtros
+            break;
           case 'price':
             const [min, max] = f.value;
             result = result.filter(p => p.price >= min && p.price <= max);
@@ -103,6 +111,16 @@ export class ProductsWineryComponent implements OnInit {
             break;
         }
       });
+
+      // 🔸 Aplicar ordenamiento
+      const orderFilter = filters.find(f => f.key === 'order');
+      if (orderFilter && orderFilter.value) {
+        if (orderFilter.value === 'Precio: menor a mayor') {
+          result.sort((a, b) => a.price - b.price);
+        } else if (orderFilter.value === 'Precio: mayor a menor') {
+          result.sort((a, b) => b.price - a.price);
+        }
+      }
   
       this.filteredProducts = result;
     }

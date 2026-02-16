@@ -39,7 +39,8 @@ export class SidebarComponent implements OnInit, OnChanges {
   ];
 
   readonly menuData: MenuItem[] = [
-    { name: 'Mi cuenta', path: '/cuenta' },
+    { name: 'Mi perfil', path: '/perfil' },
+    { name: 'Suscripción', path: '/suscripcion' },
     { name: 'Degustaciones', path: '/degustaciones' },
     { name: 'Local', path: '/local' },
   ];

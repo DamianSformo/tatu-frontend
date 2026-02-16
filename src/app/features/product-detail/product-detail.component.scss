@@ -1,5 +1,30 @@
 
+
 @use 'src/variables' as *;
+
+
+/* 🔹 Botón volver (back-btn) */
+.back-btn {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding-top: 1rem;
+  padding-left: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  outline: none;
+  transition: color 0.2s;
+
+  &:hover,
+  &:focus {
+    color: darken($primary-color, 10%);
+    text-decoration: underline;
+  }
+}
 
 .product-detail {
   padding-bottom: 7rem; // un poco más de espacio por la barra
@@ -29,13 +54,13 @@
       border: 2px solid $primary-color;
       font-weight: 600;
       padding: 2px 14px;
-      border-radius: 4px;
+      border-radius: $border-radius;
       font-size: 0.8rem;
     }
   }
 
   .info-section {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
 
     h2 {
       font-size: 1.4rem;
@@ -106,7 +131,7 @@
         background: $primary-color;
         color: #fff;
         font-size: 0.7rem;
-        border-radius: 4px;
+        border-radius: $border-radius;
         padding: 2px 6px;
       }
     }
@@ -131,7 +156,7 @@
     align-items: center;
     justify-content: space-between;
     background-color: $primary-color;
-    border-radius: 20px;
+    border-radius: $border-radius;
     width: 40%;
     padding: 0.4rem 0;
     transition: none;
@@ -190,27 +215,24 @@ html, body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem 2rem;
-  margin-top: 1rem;
+  margin: 2rem 0 2.8rem 0;
 
   .info-item {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.7rem;
 
     .icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      padding: 10px;
+      border-radius: $border-radius;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
-      background: rgba(0, 0, 0, 0.03);
-
-      &.purple { color: #a855f7; background: rgba(168, 85, 247, 0.1); }
-      &.blue { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
-      &.yellow { color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
-      &.red { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+      font-size: 0.9rem;
+      background: $secondary-color;
+      color: $primary-color;
     }
 
     .text {
@@ -249,6 +271,10 @@ html, body {
     gap: 12px;
     margin-bottom: 0.8rem;
 
+    &:last-child {
+      margin-bottom: 0;
+    }
+
     /* Left label: takes only its content width but may shrink if needed */
     .profile-label.left {
       /* Left label: content-sized but shrinkable; min-width applied at runtime */
@@ -266,19 +292,19 @@ html, body {
       flex: 1 1 0; /* grow to fill available space */
       height: 10px;
       background-color: #e9e9e9;
-      border-radius: 5px;
+      border-radius: $border-radius;
       min-width: 0; /* important so it can shrink when container is small */
 
       .fill {
         height: 100%;
-        border-radius: 5px;
+        border-radius: $border-radius;
         transition: width 0.5s ease-out;
         overflow: hidden;
 
-        &.cuerpo { background-color: #a855f7; }
-        &.acidez { background-color: #10b981; }
-        &.taninos { background-color: #ef4444; }
-        &.dulzor { background-color: #f97316; }
+        &.cuerpo { background-color: $accent-color; }
+        &.acidez { background-color: $accent-color; }
+        &.taninos { background-color: $accent-color; }
+        &.dulzor { background-color: $accent-color; }
       }
     }
 
@@ -321,75 +347,83 @@ html, body {
     background-color: rgba(128, 0, 128, 0.1); // Fondo púrpura claro
     color: $primary-color; // Texto púrpura oscuro
     padding: 0.3rem 0.8rem;
-    border-radius: 16px;
+    border-radius: $border-radius;
     font-size: 0.8rem;
     font-weight: 500;
     border: 1px solid rgba(128, 0, 128, 0.2);
   }
 }
 
-/* 🔹 Notas de Cata (Color, Aroma, Gusto) */
-.wine-attributes {
-  margin-top: 1.2rem;
-  background: #faf6ff;
-  border-radius: 10px;
-  padding: 1rem 1.2rem 0.7rem 1.2rem;
-  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.06);
-  h4 {
-    color: $primary-color;
-    font-size: 1rem;
-    margin-bottom: 0.7rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    &::before {
-      content: '\f6c4'; /* fa-wine-bottle */
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      color: $primary-color;
-      font-size: 1.1rem;
-    }
+
+/* 🔹 Unificación de bloques de vino */
+.wine-notas-cata,
+.wine-profile,
+.maridaje-section,
+.winery-description {
+  margin-bottom: 3rem;
+  margin-top: 0;
+}
+.wine-notas-cata:not(:first-child),
+.wine-profile:not(:first-child),
+.maridaje-section:not(:first-child),
+.winery-description:not(:first-child) {
+  margin-top: 3rem;
+}
+
+.wine-notas-cata h3,
+.wine-profile h3,
+.maridaje-section h3,
+.winery-description h3 {
+  color: $primary-color;
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wine-notas-cata ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.wine-notas-cata li {
+  display: flex;
+  align-items: start;
+  gap: 0.6rem;
+  font-size: 0.97rem;
+  margin-bottom: 0.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
   }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    li {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.97rem;
-      margin-bottom: 0.4rem;
-      strong {
-        min-width: 60px;
-        font-weight: 600;
-        color: #a855f7;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-      }
-      /* Íconos para cada atributo */
-      &.color-attr strong::before {
-        content: '\f53f'; /* fa-eye-dropper */
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        color: #fbbf24;
-        margin-right: 0.3rem;
-      }
-      &.aroma-attr strong::before {
-        content: '\f6b7'; /* fa-wind */
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        color: #10b981;
-        margin-right: 0.3rem;
-      }
-      &.gusto-attr strong::before {
-        content: '\f5c2'; /* fa-utensils */
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-        color: #ef4444;
-        margin-right: 0.3rem;
-      }
-    }
-  }
+}
+.wine-notas-cata strong {
+  min-width: 60px;
+  font-weight: 600;
+  color: #a855f7;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.wine-notas-cata li.color-attr strong::before {
+  content: '\f53f'; /* fa-eye-dropper */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: #fbbf24;
+  margin-right: 0.3rem;
+}
+.wine-notas-cata li.aroma-attr strong::before {
+  content: '\f6b7'; /* fa-wind */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: #10b981;
+  margin-right: 0.3rem;
+}
+.wine-notas-cata li.gusto-attr strong::before {
+  content: '\f5c2'; /* fa-utensils */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: #ef4444;
+  margin-right: 0.3rem;
 }

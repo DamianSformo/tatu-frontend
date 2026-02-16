@@ -1,0 +1,35 @@
+<section class="pi">
+
+  <header class="pi-header">
+    <div class="pi-header__action">
+      <button class="pi-header__back" routerLink="/cuenta">
+        <lucide-icon name="chevron-left" [strokeWidth]="1.5"></lucide-icon>
+      </button>
+      <h1 class="pi-header__title">datos personales</h1>
+    </div>
+  </header>
+
+  <form class="pi__card" (ngSubmit)="onSave()">
+    <div class="grid">
+      <label class="float-label" [class.has-error]="showError('nombre')">
+        <input type="text" [(ngModel)]="form.nombre" name="nombre" placeholder="Nombre" (ngModelChange)="onInputChange()" (blur)="onBlur('nombre')" />
+        <span>Nombre (s)</span>
+        <div class="input-error" *ngIf="showError('nombre')"><lucide-icon name="circle-alert" [strokeWidth]="1"></lucide-icon><p>Este campo es obligatorio</p></div>
+      </label>
+      <label class="float-label" [class.has-error]="showError('apellido')">
+        <input type="text" [(ngModel)]="form.apellido" name="apellido" placeholder="Apellido" (ngModelChange)="onInputChange()" (blur)="onBlur('apellido')" />
+        <span>Apellido (s)</span>
+        <div class="input-error" *ngIf="showError('apellido')"><lucide-icon name="circle-alert" [strokeWidth]="1"></lucide-icon><p>Este campo es obligatorio</p></div>
+      </label>
+      <!-- Teléfono eliminado según solicitud -->
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.documento" name="documento" placeholder="DNI o CUIT" (ngModelChange)="onInputChange()" />
+        <span>DNI o CUIT</span>
+      </label>
+    </div>
+  </form>
+
+  <div class="actions">
+    <button type="submit" class="primary" [disabled]="!canSave()" (click)="onSave()">Guardar cambios</button>
+  </div>
+</section>

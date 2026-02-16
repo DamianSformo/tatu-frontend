@@ -1,42 +1,54 @@
 <div class="product-card" (click)="openDetail()">
-  <div><span *ngIf="product.isNew" class="badge-new">NUEVO</span></div>
+  <div class="product-card__top">
+    <span *ngIf="product.content && product.unit" class="product-card__tag product-card__tag--dark">suma {{ product.content }} {{ product.unit }}</span>
+  </div>
 
-  <div class="image-container">
+  <div class="product-card__image">
+    <button class="product-card__favorite" type="button" aria-label="Agregar a favoritos" (click)="$event.stopPropagation()">
+      <lucide-icon name="heart" [strokeWidth]="1"></lucide-icon>
+    </button>
     <img [src]="product.imageUrl" [alt]="product.name" />
   </div>
 
-  <div class="details">
-    <h4 class="brand">{{ product.brand }}</h4>
-    <p class="name">{{ product.name }}</p>
-
-    <div class="price-section">
-      <p *ngIf="product.oldPrice" class="old-price">
-        ${{ product.oldPrice | number: '1.0-0' }}
-      </p>
-      <div class="current">
-        <p class="price">${{ product.price | number: '1.0-0' }}</p>
-        <span *ngIf="product.discount" class="discount">-{{ product.discount }}%</span>
-      </div>
-      <p *ngIf="product.installment" class="installment">{{ product.installment }}</p>
+  <div class="product-card__details">
+    <div class="product-card__pills">
+      <span *ngIf="product.content && product.unit" class="product-card__pill">{{ product.content }}{{ product.unit }}</span>
+      <span *ngIf="product.productType === 'wine' && product.year" class="product-card__pill">{{ product.year }}</span>
     </div>
 
-    <!-- Botón inicial -->
-    <div class="quantity-control" (click)="$event.stopPropagation()">
-  <button *ngIf="quantity === 0" class="add-btn-inner" (click)="addToCart()">
-    Agregar
-  </button>
+    <p class="product-card__name">{{ product.name }}</p>
 
-  <ng-container *ngIf="quantity > 0">
-    <button class="minus-btn" (click)="decrease()">−</button>
-    <span class="quantity">{{ quantity }}</span>
-    <button class="plus-btn" (click)="increase()">+</button>
-  </ng-container>
-</div>
-
-    <p *ngIf="product.pricePerLiter" class="price-per-liter">
-      Precio por 1 LT {{ product.pricePerLiter }}
+    <p *ngIf="product.origin || (product.productType === 'wine' && product.region)" class="product-card__location">
+      <span *ngIf="product.productType === 'wine' && product.region">{{ product.region }}</span>
+      <span *ngIf="product.productType === 'wine' && product.region && product.origin"> · </span>
+      <span *ngIf="product.origin">{{ product.origin }}</span>
     </p>
+
+    <div class="product-card__price-row">
+      <div class="product-card__price-stack">
+        <p *ngIf="product.oldPrice" class="product-card__price-old">${{ product.oldPrice | number: '1.0-0' }}</p>
+        <p class="product-card__price">
+          <span class="product-card__price-currency">$</span>
+          <span>{{ product.price | number: '1.0-0' }}</span>
+        </p>
+      </div>
+
+      <div class="product-card__qty" [ngClass]="{ 'product-card__qty--single': quantity === 0 }" (click)="$event.stopPropagation()">
+        <ng-container *ngIf="quantity === 0; else counter">
+            <button class="product-card__qty-btn product-card__qty-btn--single" (click)="addToCart()" aria-label="Agregar">
+              <lucide-icon name="plus"></lucide-icon>
+            </button>
+        </ng-container>
+        <ng-template #counter>
+            <button class="product-card__qty-btn product-card__qty-btn--minus" (click)="decrease()" aria-label="Restar">
+              <lucide-icon name="minus"></lucide-icon>
+            </button>
+            <span class="product-card__qty-value">{{ quantity }}</span>
+            <button class="product-card__qty-btn product-card__qty-btn--plus" (click)="increase()" aria-label="Sumar">
+              <lucide-icon name="plus"></lucide-icon>
+            </button>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>
-
-<div class="separator"></div>

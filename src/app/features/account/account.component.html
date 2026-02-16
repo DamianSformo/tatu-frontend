@@ -1,0 +1,44 @@
+<section class="account">
+
+  <header class="account-header">
+    <div class="account-header__action">
+      <button class="account-header__back" (click)="goBack()" aria-label="Volver">
+        <lucide-icon name="chevron-left" [strokeWidth]="1.5"></lucide-icon>
+      </button>
+      <h1 class="account-header__title">mi cuenta</h1>
+    </div>
+  </header>
+
+  <ul class="account-list">
+    <li class="account-list__item">
+      <div class="account-list__main" (click)="goToPersonalInfo()">
+        <div>
+          <div class="account-list__label">Mis datos</div>
+          <div class="account-list__desc">Ingresá tu nombre, apellido y DNI</div>
+        </div>
+        <lucide-icon name="chevron-right" class="account-list__chevron"></lucide-icon>
+      </div>
+    </li>
+    <li class="account-list__item">
+      <div class="account-list__main">
+        <div>
+          <div class="account-list__label">Correo electrónico</div>
+          <div class="account-list__desc">damiansformo@gmail.com</div>
+        </div>
+        <div class="account-list__right-group">
+          <span class="account-list__badge"><lucide-icon name="check" class="account-list__badge-icon"></lucide-icon> validado</span>
+          <lucide-icon name="chevron-right" class="account-list__chevron"></lucide-icon>
+        </div>
+      </div>
+    </li>
+    <li class="account-list__item">
+      <div class="account-list__main">
+        <div>
+          <div class="account-list__label">Número de celular</div>
+          <div class="account-list__desc">11 5486 5492</div>
+        </div>
+        <lucide-icon name="chevron-right" class="account-list__chevron"></lucide-icon>
+      </div>
+    </li>
+  </ul>
+</section>

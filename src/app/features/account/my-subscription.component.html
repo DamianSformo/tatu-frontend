@@ -1,0 +1,70 @@
+<section class="my-sub">
+  <header class="section-header">
+    <div class="section-header__action">
+      <button class="section-header__back" routerLink="/cuenta">
+        <lucide-icon name="arrow-left"></lucide-icon>
+      </button>
+    </div>
+    <h1 class="section-header__title">Mi suscripción</h1>
+    <span class="section-header__subtitle">Gestiona tu plan activo de Club Tatú</span>
+  </header>
+
+  <article class="sub-card">
+    <div class="sub-card__head">
+      <div>
+        <div class="pill pill--status">{{ subscription.status }}</div>
+        <h2>{{ subscription.planName }}</h2>
+        <p class="sub-card__freq">{{ subscription.frequency | titlecase }}</p>
+      </div>
+      <div class="sub-card__price">
+        <span class="value">{{ displayPrice }}</span>
+        <span class="freq">/mes</span>
+      </div>
+    </div>
+
+    <div class="sub-card__options">
+      <span class="label">Botellas por envío</span>
+      <div class="option-group">
+        <button
+          type="button"
+          class="option-pill"
+          *ngFor="let opt of subscription.bottleOptions"
+          [class.active]="subscription.bottles === opt.count"
+          (click)="selectBottleOption(opt)"
+        >
+          {{ opt.count }} botellas
+        </button>
+      </div>
+    </div>
+
+    <div class="sub-card__meta">
+      <div class="meta-item">
+        <lucide-icon name="truck"></lucide-icon>
+        <span>{{ subscription.shipping }}</span>
+      </div>
+      <div class="meta-item">
+        <lucide-icon name="calendar"></lucide-icon>
+        <span>Próxima renovación: {{ subscription.renewDate }}</span>
+      </div>
+    </div>
+
+    <div class="sub-card__benefits">
+      <div class="benefits__title">
+        <lucide-icon name="sparkles"></lucide-icon>
+        <h4>Beneficios</h4>
+      </div>
+      <ul>
+        <li *ngFor="let benefit of subscription.benefits">
+          <lucide-icon name="circle-check"></lucide-icon>
+          <span>{{ benefit }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sub-card__actions">
+      <button class="btn btn-primary" type="button">Cambiar plan</button>
+      <button class="btn btn-ghost" type="button">Pausar 1 mes</button>
+      <button class="btn btn-ghost" type="button">Cancelar suscripción</button>
+    </div>
+  </article>
+</section>

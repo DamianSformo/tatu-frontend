@@ -20,6 +20,17 @@ export class ProductsComponent implements OnInit {
     // 🔹 Nuevo: guarda el término de búsqueda
   searchTerm: string = '';
 
+  // 🔹 Categorías que pertenecen a "Bebidas"
+  private readonly bebidasCategories = ['wine', 'beer', 'whisky'];
+
+  // 🔹 Obtiene el breadcrumb dinámicamente
+  getBreadcrumb(): string {
+    if (this.bebidasCategories.includes(this.selectedCategoryKey)) {
+      return `Bebidas > ${this.categoryName}`;
+    }
+    return this.categoryName;
+  }
+
   ngOnInit(): void {
     const savedCategory = sessionStorage.getItem('selectedCategory');
     if (savedCategory) {
@@ -72,22 +83,62 @@ export class ProductsComponent implements OnInit {
     // 🔸 Aplicación de filtros
     filters.forEach(f => {
       switch (f.key) {
-        case 'price':
+        case 'order': {
+          // Ordenamiento se aplica después de filtros
+          break;
+        }
+        case 'price': {
           const [min, max] = f.value;
           result = result.filter(p => p.price >= min && p.price <= max);
           break;
-        case 'origin':
-          if (f.value) result = result.filter(p => p.origin === f.value);
+        }
+        case 'origin': {
+          if (Array.isArray(f.value) && f.value.length > 0) {
+            result = result.filter(p => f.value.includes(p.origin));
+          } else if (f.value && !Array.isArray(f.value)) {
+            result = result.filter(p => p.origin === f.value);
+          }
           break;
-        case 'type':
+        }
+        case 'type': {
           if (f.value && f.value.length > 0)
             result = result.filter(p => f.value.includes(p.type));
           break;
-        case 'year':
-          if (f.value) result = result.filter((p: any) => p.year === f.value);
+        }
+        case 'year': {
+          if (Array.isArray(f.value) && f.value.length > 0) {
+            result = result.filter((p: any) => f.value.includes(String(p.year)));
+          } else if (f.value && !Array.isArray(f.value)) {
+            result = result.filter((p: any) => String(p.year) === String(f.value));
+          }
           break;
+        }
+        case 'variety': {
+          if (Array.isArray(f.value) && f.value.length > 0) {
+            result = result.filter(p => f.value.includes(String((p as any).variety)));
+          } else if (f.value && !Array.isArray(f.value)) {
+            result = result.filter(p => String((p as any).variety) === String(f.value));
+          }
+          break;
+        }
+        case 'maridajes': {
+          if (f.value && f.value.length > 0) {
+            result = result.filter(p => Array.isArray(p.maridajes) && p.maridajes.some((m: string) => f.value.includes(m)));
+          }
+          break;
+        }
       }
     });
+
+    // 🔸 Aplicar ordenamiento
+    const orderFilter = filters.find(f => f.key === 'order');
+    if (orderFilter && orderFilter.value) {
+      if (orderFilter.value === 'Precio: menor a mayor') {
+        result.sort((a, b) => a.price - b.price);
+      } else if (orderFilter.value === 'Precio: mayor a menor') {
+        result.sort((a, b) => b.price - a.price);
+      }
+    }
 
     this.filteredProducts = result;
   }

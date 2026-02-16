@@ -48,6 +48,7 @@ export interface WineProduct extends BaseProduct {
   gusto?: string;
   barrica?: string;
   servicio?: string;
+  notasDeCata?: string;
 }
 
 /* ---------------------- */
@@ -83,6 +84,9 @@ export interface ListProduct {
   installment?: string;
   // fields useful for filtering in lists
   origin?: string;
+  region?: string;
   type?: string;
+  variety?: string;
   year?: number;
+  maridajes?: string[];
 }

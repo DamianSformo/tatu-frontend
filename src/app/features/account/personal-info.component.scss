@@ -1,0 +1,268 @@
+@import '../../../_variables.scss';
+@import '../../shared/styles/header';
+
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+
+// ====================
+// 📱 CONTENEDOR PRINCIPAL (MOBILE FIRST)
+// ====================
+// Aplica la fuente globalmente a todo el bloque y sus hijos
+.pi, .pi * {
+  font-family: 'Be Vietnam Pro', sans-serif !important;
+}
+
+.pi {
+  min-height: 100%;
+  background: $background-color;
+  padding: 1rem 5% 3rem;
+  color: $text-color;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+
+  .pi-header {
+  @extend %section-header;
+
+  .pi-header__action {
+    @extend %section-header-action;
+  }
+
+  &__back {
+    @extend %section-header-back;
+
+    lucide-icon {
+      @extend %section-header-back-icon;
+    }
+  }
+
+  &__title {
+    @extend %section-header-title;
+  }
+}
+
+
+  // ====================
+  // 📋 ENCABEZADO
+  // ====================
+  &__top {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-color;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      color: $primary-color;
+      font-size: 0.95rem;
+      opacity: 0.7;
+      line-height: 1.4;
+    }
+  }
+
+  &__back {
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    cursor: pointer;
+    margin-bottom: 1rem;
+
+    ::ng-deep lucide-icon svg {
+      width: 24px !important;
+      height: 24px !important;
+      stroke-width: 2.5 !important;
+    }
+  }
+
+  // ====================
+  // 📝 FORMULARIO
+  // ====================
+  &__card {
+    background: $background-color;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  // ====================
+  // 🔲 GRID DE INPUTS
+  // ====================
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  // ====================
+  // 🏷️ FLOAT LABEL INPUTS
+  // ====================
+  label.float-label {
+    position: relative;
+    display: block;
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 2rem 1.4rem 0.9rem;
+      line-height: 1.5;
+      background: $background-color;
+      border: 1px solid rgba($color-25, 1);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 300;
+      color: $text-color;
+      transition: all 0.2s ease;
+
+      &::placeholder {
+        color: transparent;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $color-50;
+        box-shadow: 0 0 0 3px rgba($color-50, 0.1);
+        padding: 2rem 1.4rem 0.9rem;
+
+        &::placeholder {
+          color: transparent;
+        }
+      }
+
+      &:not(:placeholder-shown) {
+        padding: 2rem 1.4rem 0.9rem;
+      }
+    }
+
+    span {
+      position: absolute;
+      left: 1.5rem;
+      top: 1.45rem;
+      font-size: 1rem;
+      color: $primary-color;
+      opacity: 0.5;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      font-weight: 300;
+      color: $color-75;
+    }
+
+    input:focus + span,
+    input:not(:placeholder-shown) + span {
+      top: 1.05rem;
+      font-size: 0.6rem;
+      opacity: 1;
+      color: $color-50;
+      font-weight: 300;
+    }
+
+    // Estilos para estado de error
+    &.has-error {
+      input {
+        border-color: $danger-color;
+        box-shadow: 0 0 0 2px rgba($danger-color, 0.1);
+      }
+
+      span {
+        color: $danger-color;
+        opacity: 1;
+        font-weight: 200;
+      }
+
+      input:focus {
+        border-color: $danger-color;
+        box-shadow: 0 0 0 3px rgba($danger-color, 0.15);
+      }
+
+      input:focus + span,
+      input:not(:placeholder-shown) + span {
+        color: $danger-color;
+      }
+    }
+   }
+
+  .input-error {
+    color: $danger-color;
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    font-weight: 200;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  
+    p{
+      margin: 0;
+    }
+
+    lucide-icon{
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+}
+
+// ====================
+// 🎬 BARRA DE ACCIONES FIJA
+// ====================
+
+.actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $background-color;
+  padding: 1.2rem 5%;
+  box-shadow: 0 -2px 12px rgba($primary-color, 0.06);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+
+  .primary {
+    flex: 1;
+    font-size: 1.1rem;
+    padding: 1.1rem 0;
+    box-sizing: border-box;
+    border: none;
+    border-radius: $border-radius;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $accent-color;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: darken($accent-color, 8%);
+      box-shadow: 0 4px 12px rgba($accent-color, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.pi__card {
+  /* Add bottom padding to avoid being hidden by the fixed bar */
+  padding-bottom: 4rem;
+}

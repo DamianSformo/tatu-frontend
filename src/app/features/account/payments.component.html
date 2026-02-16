@@ -1,0 +1,63 @@
+<section class="pay">
+
+  <header class="section-header">
+    <div class="section-header__action">
+      <button class="section-header__back" routerLink="/perfil">
+        <lucide-icon name="arrow-left"></lucide-icon>
+      </button>
+    </div>
+    <h1 class="section-header__title">Métodos de pago</h1>
+    <span class="section-header__subtitle">Añade tarjetas para pagar más rápido</span>
+  </header>
+
+  <section class="pay__list" *ngIf="methods.length > 0">
+    <article class="pay__item" *ngFor="let m of methods; let i = index" (click)="editMethod(i)">
+      <div class="pay__icon" [ngClass]="m.brand">
+        <lucide-icon name="credit-card"></lucide-icon>
+      </div>
+      <div class="pay__text">
+        <p class="pay__alias">{{ m.alias }}</p>
+        <p class="pay__number">•••• {{ m.last4 }} · Vence {{ m.exp }}</p>
+        <span class="pay__tag" *ngIf="m.principal">Principal</span>
+      </div>
+      <lucide-icon class="pay__chevron" name="chevron-right"></lucide-icon>
+    </article>
+  </section>
+
+  <div class="pay__empty" *ngIf="methods.length === 0">
+    <p>No tienes métodos de pago aún.</p>
+  </div>
+
+  <form class="pay__card pay__form" *ngIf="showForm" (ngSubmit)="save()">
+    <div class="grid">
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.alias" name="alias" placeholder="Alias" />
+        <span>Alias (Visa, Cuenta sueldo)</span>
+      </label>
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.last4" name="last4" placeholder="Últimos 4" maxlength="4" />
+        <span>Últimos 4 dígitos</span>
+      </label>
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.brand" name="brand" placeholder="Marca" />
+        <span>Marca</span>
+      </label>
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.exp" name="exp" placeholder="MM/AA" />
+        <span>Vencimiento (MM/AA)</span>
+      </label>
+    </div>
+
+    <label class="checkbox-row">
+      <input type="checkbox" [(ngModel)]="form.principal" name="principal" />
+      <span>Marcar como principal</span>
+    </label>
+
+    <div class="actions dual">
+      <button type="button" class="secondary" (click)="cancelForm()">Cancelar</button>
+      <button type="submit" class="primary">Guardar</button>
+    </div>
+  </form>
+
+  <button type="button" class="pay__add" (click)="startAdd()">Añadir método</button>
+</section>

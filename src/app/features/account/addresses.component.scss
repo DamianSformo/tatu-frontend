@@ -1,0 +1,419 @@
+@import '../../../_variables.scss';
+
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+
+// ====================
+// 🏠 CONTENEDOR PRINCIPAL
+// ====================
+.addr {
+  padding: 1.5rem 5%;
+  background: $background-color;
+  color: $text-color;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  position: relative;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin-bottom: 95px;
+  overflow-y: auto;
+
+  // ====================
+  // 📋 ENCABEZADO
+  // ====================
+  &__top {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: $text-color;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      color: $primary-color;
+      font-size: 0.95rem;
+      opacity: 0.7;
+      line-height: 1.4;
+    }
+  }
+
+  &__back {
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    cursor: pointer;
+    margin-bottom: 1rem;
+
+    ::ng-deep lucide-icon svg {
+      width: 24px !important;
+      height: 24px !important;
+      stroke-width: 2.5 !important;
+    }
+  }
+
+  // ====================
+  // 📍 LISTA DE DIRECCIONES
+  // ====================
+  &__list {
+    display: grid;
+    gap: $spacing-md;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.3rem;
+    padding: 1.4rem 1.4rem 1.5rem 1.4rem;
+    border-radius: $border-radius;
+    background: $background-color;
+    border: 1px solid rgba($primary-color, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.08);
+    }
+  }
+
+  &__item--primary {
+    border-color: $accent-color;
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $secondary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-color;
+    align-self: flex-start;
+    margin-top: 0.3rem;
+
+    lucide-icon {
+      width: 20px;
+      height: 20px;
+
+      svg {
+        width: 100%;
+        height: 100%;
+        stroke-width: 2;
+      }
+    }
+  }
+
+  &__icon--primary {
+    background: $accent-color;
+    color: #fff;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  &__alias {
+    margin: 0;
+    margin-bottom : 0.1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  &__address {
+    margin: 0;
+    font-size: 0.8rem;
+    color: $primary-color;
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+
+  &__indication {
+    display: block;
+    color: $primary-color;
+    opacity: 0.7;
+    font-size: 0.8rem;
+    margin-top: 0.1rem;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+  }
+
+  &__tag {
+    display: inline-block;
+    background: $accent-color;
+    color: #fff;
+    padding: 0.25rem 0.8rem;
+    border-radius: $border-radius;
+    font-weight: 600;
+    font-size: 0.7rem;
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+
+  &__type {
+    display: inline-block;
+    background: rgba($primary-color, 0.08);
+    color: $primary-color;
+    padding: 0.2rem 0.55rem;
+    border-radius: $border-radius;
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+    margin-left: 0.35rem;
+    align-self: flex-start;
+  }
+
+  &__chevron{
+    color: $primary-color;
+    opacity: 0.3;
+    
+    lucide-icon {
+      width: 20px;
+      height: 20px;
+
+      svg {
+        width: 100%;
+        height: 100%;
+        stroke-width: 3;
+      }
+    }
+  }
+
+  &__empty {
+    color: $primary-color;
+    opacity: 0.6;
+    text-align: center;
+    padding: $spacing-lg;
+  }
+
+}
+
+// ====================
+// 🎬 BARRA DE ACCIONES FIJA
+// ====================
+
+.actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $background-color;
+  padding: 1.2rem 5%;
+  box-shadow: 0 -2px 12px rgba($primary-color, 0.06);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+
+  .primary {
+    flex: 1;
+    max-width: 500px;
+    font-size: 1.1rem;
+    padding: 1.1rem 0;
+    box-sizing: border-box;
+    border: none;
+    border-radius: $border-radius;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: $accent-color;
+    color: #fff;
+
+    span {
+      font-weight: 700;
+    }
+
+    ::ng-deep lucide-icon svg {
+      width: 20px !important;
+      height: 20px !important;
+      stroke-width: 2.5 !important;
+    }
+
+    &:hover:not(:disabled) {
+      background: darken($accent-color, 8%);
+      box-shadow: 0 4px 12px rgba($accent-color, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ====================
+// ====================
+// 📋 GRID DE FORMULARIO
+// ====================
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: $spacing-md;
+}
+
+// ====================
+// 🏷️ INPUTS CON FLOATING LABELS
+// ====================
+label.float-label {
+  position: relative;
+  display: block;
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    line-height: 1.5;
+    background: $secondary-color;
+    border: none;
+    border-radius: $border-radius;
+    transition: padding 0.2s ease, box-shadow 0.2s ease;
+    color: $text-color;
+    font-size: 1rem;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:focus,
+    &:not(:placeholder-shown) {
+      padding: 22px 16px 6px;
+      box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
+      outline: none;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  select {
+    width: 100%;
+    padding: 14px 16px;
+    background: $secondary-color;
+    border: none;
+    border-radius: $border-radius;
+    color: $text-color;
+    font-size: 1rem;
+    line-height: 1.5;
+    appearance: none;
+  }
+
+  span {
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    font-size: 1rem;
+    color: $primary-color;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  input:focus + span,
+  input:not(:placeholder-shown) + span {
+    top: 6px;
+    font-size: 0.75rem;
+    color: $primary-color;
+    opacity: 0.7;
+    font-weight: 500;
+  }
+}
+
+// ====================
+// ✅ CHECKBOX
+// ====================
+.checkbox-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  border: none;
+  border-radius: $border-radius;
+  background: $secondary-color;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba($primary-color, 0.06);
+  }
+
+  input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 1rem;
+    color: $text-color;
+  }
+}
+
+// ====================
+// 🔘 BOTONES DE ACCIÓN
+// ====================
+.actions {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  &.dual {
+    justify-content: space-between;
+  }
+}
+
+.primary,
+.secondary {
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.875rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary {
+  background: $accent-color;
+  color: #fff;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba($accent-color, 0.3);
+    transform: translateY(-1px);
+  }
+}
+
+.secondary {
+  background: $secondary-color;
+  color: $text-color;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba($primary-color, 0.08);
+    transform: translateY(-1px);
+  }
+}

@@ -1,0 +1,146 @@
+<section class="rew">
+  
+  <header class="rew-header">
+    <div class="rew-header__action">
+      <button class="rew-header__back" routerLink="/perfil" aria-label="Volver a perfil">
+        <lucide-icon name="chevron-left" [strokeWidth]="1.5"></lucide-icon>
+      </button>
+      <h1 class="rew-header__title">nivel {{ summary.tier }}</h1>
+    </div>
+  </header>
+
+  <article class="rew__hero">
+    
+    <div class="rew__hero-number">
+      <span class="rew__hero-ml">{{ summary.ml }}</span>
+      <span class="rew__hero-unit">ml</span>
+    </div>
+
+    <div class="rew__hero-caption">
+      <span>te faltan <strong>{{ summary.remainingToNext }} ml</strong> para</span>
+      <span class="rew__hero-next">{{ summary.nextTier }}</span>
+    </div>
+
+    <div class="rew__hero-slider">
+      <div class="rew__hero-track">
+        <div class="rew__hero-fill" [style.width.%]="nextTierProgress"></div>
+        <div class="rew__hero-thumb" [style.left.%]="nextTierProgress"></div>
+      </div>
+      <div class="rew__hero-scale">
+        <span>{{ summary.ml }} ml</span>
+        <span>{{ summary.ml + summary.remainingToNext }} ml</span>
+      </div>
+    </div>
+  </article>
+
+  <div class="rew-container">
+
+  <section class="rew__card rew__benefits">
+    <div class="rew__benefits-toggle">
+      <button 
+        class="rew__benefits-tab" 
+        [class.active]="selectedBenefitsTab === 'current'"
+        (click)="selectedBenefitsTab = 'current'">
+        Beneficios actuales
+      </button>
+      <button 
+        class="rew__benefits-tab" 
+        [class.active]="selectedBenefitsTab === 'next'"
+        (click)="selectedBenefitsTab = 'next'">
+        Próximo nivel
+      </button>
+    </div>
+    <ul>
+      <li *ngFor="let b of (selectedBenefitsTab === 'current' ? currentBenefits : nextBenefits); trackBy: trackByTitle" class="rew__benefit-item">
+        <span class="rew__benefit-check">
+          <lucide-icon name="circle-check-big"></lucide-icon>
+        </span>
+        <span>{{ b.title }}</span>
+      </li>
+    </ul>
+  </section>
+
+
+  <section class="rew__challenges">
+    <div class="rew__challenges-head">
+      <h3>Recompensas</h3>
+    </div>
+    <ul>
+      <li *ngFor="let c of challenges; trackBy: trackByChallengeTitle" (click)="openChallenge(c)">
+        <div class="rew__challenge-header">
+          <div>
+            <h4 class="rew__challenge-title">{{ c.title }}</h4>
+            <p class="rew__challenge-desc">{{ c.detail }}</p>
+          </div>
+        </div>
+        <span class="rew__reward-chip">{{ c.reward }}</span>
+        <div class="rew__challenge-footer">
+          <span class="rew__challenge-progress">Progreso: {{ c.progressCurrent }}/{{ c.progressTotal }}</span>
+          <button class="rew__challenge-btn" [disabled]="!isChallengeComplete(c)" (click)="redeemChallenge($event, c)">canjear</button>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+
+  <section class="rew__history">
+    <div class="rew__history-head">
+      <h3>Mis últimos movimientos</h3>
+      <span class="rew__history-subtitle">Últimos 30 días</span>
+    </div>
+    <ul>
+      <li *ngFor="let h of displayedHistory; trackBy: trackByHistoryTitle" [class.expired]="h.badge === 'vencido'">
+        <div class="rew__history-text">
+          <p class="rew__history-title">{{ h.title }}</p>
+          <div class="rew__history-info">
+            <span class="rew__history-date">{{ h.date }}</span>
+            <span class="rew__history-badge" *ngIf="h.badge">{{ h.badge }}</span>
+          </div>
+        </div>
+        <span class="rew__history-amount">{{ h.ml }}ml</span>
+      </li>
+    </ul>
+    <button class="rew__history-toggle" (click)="toggleExpiredHistory()">
+      <lucide-icon [name]="showExpiredHistory ? 'chevron-up' : 'chevron-down'" [strokeWidth]="1.5"></lucide-icon>
+      {{ showExpiredHistory ? 'Ocultar movimientos vencidos' : 'Ver movimientos vencidos' }}
+    </button>
+  </section>
+
+  </div>
+
+  <div class="rew__modal" *ngIf="selectedChallenge">
+    <div class="rew__modal-backdrop" (click)="closeChallenge()"></div>
+    <div class="rew__modal-content" [@slideUp] (click)="$event.stopPropagation()">
+      <div class="rew__modal-handle"></div>
+      
+      <header class="rew__modal-header">
+        <h2 class="rew__modal-title">{{ selectedChallenge?.title }}</h2>
+        <p class="rew__modal-desc">
+          {{ selectedChallenge?.detail }} para recibir <strong>{{ selectedChallenge?.reward }}</strong>.
+        </p>
+      </header>
+
+      <div class="rew__modal-progress">
+        <div class="rew__progress-bar">
+          <div class="rew__progress-bar-fill" [style.width.%]="selectedChallengeProgress"></div>
+        </div>
+        <div class="rew__progress-info">
+          <span class="rew__progress-text">Progreso: {{ selectedChallenge?.progressCurrent }}/{{ selectedChallenge?.progressTotal }}</span>
+          <span class="rew__progress-reward">{{ selectedChallenge?.reward }}</span>
+        </div>
+      </div>
+
+      <div class="rew__modal-grapes" *ngIf="selectedChallenge && hasDetailItems(selectedChallenge)">
+        <h3 class="rew__modal-section-title">{{ getChallengeDetailTitle(selectedChallenge) }}</h3>
+        <ul class="rew__grape-list" [class.grapes-type]="getChallengeType(selectedChallenge) === 'grapes'">
+          <li *ngFor="let item of selectedChallenge?.purchased; trackBy: trackByItem" class="rew__grape-item purchased">{{ item }}</li>
+          <ng-container *ngIf="!shouldShowOnlyPurchased(selectedChallenge)">
+            <li *ngFor="let item of selectedChallenge?.remaining; trackBy: trackByItem" class="rew__grape-item">{{ item }}</li>
+          </ng-container>
+        </ul>
+      </div>
+
+      <button class="rew__modal-btn" type="button" (click)="closeChallenge()">Ver recomendaciones</button>
+    </div>
+  </div>
+</section>

@@ -1,23 +1,59 @@
 <div *ngIf="product" class="product-detail">
+
   <!-- Imagen -->
+  <button class="back-btn" (click)="goBack()" aria-label="Volver">← Volver</button>
+
   <div class="image-section">
     <img [src]="product.imageUrl" [alt]="product.name" />
-    <span *ngIf="product.isNew" class="badge-new">NUEVO</span>
   </div>
 
   <!-- Info descriptiva -->
   <div class="info-section">
-    <button class="back-btn" (click)="goBack()" aria-label="Volver">← Volver</button>
+
     <h2>{{ product.name }}</h2>
 
     <!-- 🔹 Info técnica en 2 columnas con iconos -->
     <ng-container *ngIf="product as p">
+
       <!-- 🔸 INFO EXCLUSIVA DE VINO 👇 -->
       <ng-container *ngIf="p.productType === 'wine'">
         <div class="extra-info">
+          <!-- Tipo -->
+          <div class="info-item" *ngIf="p.type">
+            <div class="icon red"><lucide-icon name="wine"></lucide-icon></div>
+            <div class="text">
+              <span class="label">Tipo</span>
+              <span class="value">{{ p.type }}</span>
+            </div>
+          </div>
+          <!-- Uva -->
+          <div class="info-item" *ngIf="p.variety">
+            <div class="icon red"><lucide-icon name="grape"></lucide-icon></div>
+            <div class="text">
+              <span class="label">Uva</span>
+              <span class="value">{{ p.variety }}</span>
+            </div>
+          </div>
+
+          <!-- Origen -->
+          <div class="info-item" *ngIf="p.origin">
+            <div class="icon blue"><lucide-icon name="map-pin"></lucide-icon></div>
+            <div class="text">
+              <span class="label">Origen</span>
+              <span class="value">{{ p.origin }}</span>
+            </div>
+          </div>
+          <!-- Región -->
+          <div class="info-item" *ngIf="p.region">
+            <div class="icon blue"><lucide-icon name="map"></lucide-icon></div>
+            <div class="text">
+              <span class="label">Región</span>
+              <span class="value">{{ p.region }}</span>
+            </div>
+          </div>
           <!-- Marca -->
           <div class="info-item">
-            <div class="icon purple"><i class="fa-solid fa-wine-glass"></i></div>
+            <div class="icon purple"><lucide-icon name="wine"></lucide-icon></div>
             <div class="text">
               <span class="label">Bodega</span>
               <span class="value">
@@ -27,87 +63,34 @@
               </span>
             </div>
           </div>
-          <!-- Origen -->
-          <div class="info-item" *ngIf="p.origin">
-            <div class="icon blue"><i class="fa-solid fa-location-dot"></i></div>
-            <div class="text">
-              <span class="label">Origen</span>
-              <span class="value">{{ p.origin }}</span>
-            </div>
-          </div>
-          <!-- Región -->
-          <div class="info-item" *ngIf="p.region">
-            <div class="icon blue"><i class="fa-solid fa-map-location-dot"></i></div>
-            <div class="text">
-              <span class="label">Región</span>
-              <span class="value">{{ p.region }}</span>
-            </div>
-          </div>
-          <!-- Barrica -->
-          <div class="info-item" *ngIf="p.barrica">
-            <div class="icon yellow"><i class="fa-solid fa-barrel"></i></div>
-            <div class="text">
-              <span class="label">Barrica</span>
-              <span class="value">{{ p.barrica }}</span>
-            </div>
-          </div>
+
           <!-- Servicio -->
           <div class="info-item" *ngIf="p.servicio">
-            <div class="icon blue"><i class="fa-solid fa-temperature-low"></i></div>
+            <div class="icon blue"><lucide-icon name="thermometer"></lucide-icon></div>
             <div class="text">
               <span class="label">Servicio</span>
               <span class="value">{{ p.servicio }}</span>
             </div>
           </div>
-          <!-- Cosecha -->
-          <div class="info-item" *ngIf="p.year">
-            <div class="icon yellow"><i class="fa-solid fa-calendar"></i></div>
-            <div class="text">
-              <span class="label">Cosecha</span>
-              <span class="value">{{ p.year }}</span>
-            </div>
-          </div>
-          <!-- Tipo -->
-          <div class="info-item" *ngIf="p.type">
-            <div class="icon red"><i class="fa-solid fa-wine-bottle"></i></div>
-            <div class="text">
-              <span class="label">Tipo</span>
-              <span class="value">{{ p.type }}</span>
-            </div>
-          </div>
-          <!-- Uva -->
-          <div class="info-item" *ngIf="p.variety">
-            <div class="icon red"><i class="fa-solid fa-grapes"></i></div>
-            <div class="text">
-              <span class="label">Uva</span>
-              <span class="value">{{ p.variety }}</span>
-            </div>
-          </div>
-          <!-- Región -->
-          <div class="info-item" *ngIf="p.region">
-            <div class="icon blue"><i class="fa-solid fa-map-location-dot"></i></div>
-            <div class="text">
-              <span class="label">Región</span>
-              <span class="value">{{ p.region }}</span>
-            </div>
-          </div>
-          <!-- Alcohol -->
-          <div class="info-item" *ngIf="p.alcohol">
-            <div class="icon grey"><i class="fa-solid fa-percent"></i></div>
-            <div class="text">
-              <span class="label">Alcohol</span>
-              <span class="value">{{ p.alcohol }}%</span>
-            </div>
-          </div>
           <!-- Volumen -->
           <div class="info-item" *ngIf="getVolumeLabel(p)">
-            <div class="icon grey"><i class="fa-solid fa-weight-hanging"></i></div>
+            <div class="icon grey"><lucide-icon name="scale"></lucide-icon></div>
             <div class="text">
               <span class="label">Volumen</span>
               <span class="value">{{ getVolumeLabel(p) }}</span>
             </div>
           </div>
+          <!-- Alcohol -->
+          <div class="info-item" *ngIf="p.alcohol">
+            <div class="icon grey"><lucide-icon name="percent"></lucide-icon></div>
+            <div class="text">
+              <span class="label">Alcohol</span>
+              <span class="value">{{ p.alcohol }}%</span>
+            </div>
+          </div>
+
         </div>
+
       </ng-container>
 
       <!-- 🔸 INFO EXCLUSIVA DE CERVEZA 👇 -->
@@ -115,7 +98,7 @@
         <div class="extra-info">
           <!-- Marca -->
           <div class="info-item">
-            <div class="icon purple"><i class="fa-solid fa-beer-mug-empty"></i></div>
+            <div class="icon purple"><lucide-icon name="beer"></lucide-icon></div>
             <div class="text">
               <span class="label">Fabricante</span>
               <span class="value">
@@ -127,7 +110,7 @@
           </div>
           <!-- Origen -->
           <div class="info-item" *ngIf="p.origin">
-            <div class="icon blue"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="icon blue"><lucide-icon name="map-pin"></lucide-icon></div>
             <div class="text">
               <span class="label">Origen</span>
               <span class="value">{{ p.origin }}</span>
@@ -135,7 +118,7 @@
           </div>
           <!-- Tipo de Cerveza -->
           <div class="info-item" *ngIf="p.type">
-            <div class="icon yellow"><i class="fa-solid fa-beer-mug-empty"></i></div>
+            <div class="icon yellow"><lucide-icon name="beer"></lucide-icon></div>
             <div class="text">
               <span class="label">Tipo</span>
               <span class="value">{{ p.type }}</span>
@@ -143,7 +126,7 @@
           </div>
           <!-- IBU -->
           <div class="info-item" *ngIf="p.ibu">
-            <div class="icon green"><i class="fa-solid fa-leaf"></i></div>
+            <div class="icon green"><lucide-icon name="leaf"></lucide-icon></div>
             <div class="text">
               <span class="label">IBU</span>
               <span class="value">{{ p.ibu }}</span>
@@ -151,7 +134,7 @@
           </div>
           <!-- Volumen -->
           <div class="info-item" *ngIf="getVolumeLabel(p)">
-            <div class="icon grey"><i class="fa-solid fa-weight-hanging"></i></div>
+            <div class="icon grey"><lucide-icon name="scale"></lucide-icon></div>
             <div class="text">
               <span class="label">Volumen</span>
               <span class="value">{{ getVolumeLabel(p) }}</span>
@@ -159,95 +142,93 @@
           </div>
         </div>
       </ng-container>
+
     </ng-container>
 
-  <!-- Descripción de la Bodega (solo para vinos) -->
-  <div class="winery-description" *ngIf="product.productType === 'wine' && product.wineryDescription">
-    <div class="winery-description">
-      <h3>Sobre la Bodega</h3>
-      <p>{{ product.wineryDescription }}</p>
-    </div>
-  </div>
+    <!-- Perfil del Vino (fuera del bloque anterior) -->
 
-  <!-- Maridaje (solo para vinos) -->
-  <div class="maridaje-section" *ngIf="product.productType === 'wine' && product.maridajes && product.maridajes.length > 0">
-    <h3>Maridaje</h3>
-    <div class="chips-container">
-      <span *ngFor="let maridaje of product.maridajes" class="chip">
-        {{ maridaje }}
-      </span>
-    </div>
-  </div>
+    <div class="wine-exclusive" *ngIf="product.productType === 'wine'">
 
+      <!-- Notas de cata -->
+      <div class="wine-notas-cata" *ngIf="product.notasDeCata || product.color || product.aroma || product.gusto">
+        <h3>Notas de cata</h3>
+        <p *ngIf="product.notasDeCata">{{ product.notasDeCata }}</p>
+        <ul>
+          <li *ngIf="product.color"><strong>Color:</strong> {{ product.color }}</li>
+          <li *ngIf="product.aroma"><strong>Aroma:</strong> {{ product.aroma }}</li>
+          <li *ngIf="product.gusto"><strong>Gusto:</strong> {{ product.gusto }}</li>
+        </ul>
+      </div>
+      
+      <!-- Perfil del Vino -->
+      <div class="wine-profile">
+        <h3>Perfil del Vino</h3>
+        <div class="profile-item">
+          <span class="profile-label left">Ligero</span>
+          <div class="bar">
+            <div class="fill cuerpo" [style.width.%]="product.body"></div>
+          </div>
+          <span class="profile-label right">Completo</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label left">Joven</span>
+          <div class="bar">
+            <div class="fill taninos" [style.width.%]="product.tannins"></div>
+          </div>
+          <span class="profile-label right">Barrica</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label left">Dulce</span>
+          <div class="bar">
+            <div class="fill dulzor" [style.width.%]="product.sweetness"></div>
+          </div>
+          <span class="profile-label right">Seco</span>
+        </div>
+      </div>
 
+      <!-- Maridaje -->
+      <div class="maridaje-section" *ngIf="product.maridajes && product.maridajes.length > 0">
+        <h3>Maridaje</h3>
+        <div class="chips-container">
+          <span *ngFor="let maridaje of product.maridajes" class="chip">
+            {{ maridaje }}
+          </span>
+        </div>
+      </div>
 
-<!-- Perfil del Vino (fuera del bloque anterior) -->
-
-<div class="wine-profile" *ngIf="product.productType === 'wine'">
-  <h3>Perfil del Vino</h3>
-
-  <div class="profile-item">
-    <span class="profile-label left">Ligero</span>
-    <div class="bar"><div class="fill cuerpo" [style.width.%]="product.body"></div></div>
-    <span class="profile-label right">Completo</span>
-  </div>
-
-  <div class="profile-item">
-    <span class="profile-label left">Joven</span>
-    <div class="bar"><div class="fill taninos" [style.width.%]="product.tannins"></div></div>
-    <span class="profile-label right">Barrica</span>
-  </div>
-
-  <div class="profile-item">
-    <span class="profile-label left">Dulce</span>
-    <div class="bar"><div class="fill dulzor" [style.width.%]="product.sweetness"></div></div>
-    <span class="profile-label right">Seco</span>
-  </div>
-
-  <!-- Apartado exclusivo: Color, Aroma y Gusto -->
-  <div class="wine-attributes" *ngIf="product.color || product.aroma || product.gusto">
-    <h4>Notas de Cata</h4>
-    <ul>
-      <li *ngIf="product.color"><strong>Color:</strong> {{ product.color }}</li>
-      <li *ngIf="product.aroma"><strong>Aroma:</strong> {{ product.aroma }}</li>
-      <li *ngIf="product.gusto"><strong>Gusto:</strong> {{ product.gusto }}</li>
-    </ul>
-  </div>
-</div>
-
-</div>
-<!-- 🔸 FIN BLOQUE EXCLUSIVO DE VINO -->
-
-
-    <p *ngIf="product.pricePerLiter" class="price-per-liter">
-      Precio por 1 LT {{ product.pricePerLiter }}
-    </p>
-
-
-<!-- 🔹 Barra fija inferior -->
-<div class="bottom-bar" *ngIf="product">
-  <div class="price-block">
-    <p *ngIf="product.oldPrice" class="old-price">
-      ${{ product.oldPrice | number:'1.0-0' }}
-    </p>
-
-    <div class="current-price">
-      <p class="price">${{ product.price | number:'1.0-0' }}</p>
-      <span *ngIf="product.discount" class="discount">-{{ product.discount }}%</span>
+      <!-- Sobre la Bodega -->
+      <div class="winery-description" *ngIf="product.wineryDescription">
+          <h3>Sobre la Bodega</h3>
+          <p>{{ product.wineryDescription }}</p>
+      </div>
     </div>
 
-    <p *ngIf="product.installment" class="installment">{{ product.installment }}</p>
-  </div>
+    <!-- FIN Perfil del Vino (fuera del bloque anterior) -->
 
-  <div class="quantity-control">
-    <button *ngIf="quantity === 0" class="add-btn-inner" (click)="addToCart()">
-      Agregar
-    </button>
+    <!-- 🔹 Barra fija inferior -->
+    <div class="bottom-bar" *ngIf="product">
+      <div class="price-block">
+        <p *ngIf="product.oldPrice" class="old-price">
+          ${{ product.oldPrice | number:'1.0-0' }}
+        </p>
 
-    <ng-container *ngIf="quantity > 0">
-      <button class="minus-btn" (click)="decrease()">−</button>
-      <span class="quantity">{{ quantity }}</span>
-      <button class="plus-btn" (click)="increase()">+</button>
-    </ng-container>
-  </div>
-</div>
+        <div class="current-price">
+          <p class="price">${{ product.price | number:'1.0-0' }}</p>
+          <span *ngIf="product.discount" class="discount">-{{ product.discount }}%</span>
+        </div>
+
+        <p *ngIf="product.installment" class="installment">{{ product.installment }}</p>
+      </div>
+
+      <div class="quantity-control">
+        <button *ngIf="quantity === 0" class="add-btn-inner" (click)="addToCart()">
+          Agregar
+        </button>
+
+        <ng-container *ngIf="quantity > 0">
+          <button class="minus-btn" (click)="decrease()">−</button>
+          <span class="quantity">{{ quantity }}</span>
+          <button class="plus-btn" (click)="increase()">+</button>
+        </ng-container>
+      </div>
+    </div>

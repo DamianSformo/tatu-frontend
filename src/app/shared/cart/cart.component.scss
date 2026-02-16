@@ -132,8 +132,10 @@
           color: #e53935;
         }
 
-        .material-symbols-sharp {
-          font-size: 20px;
+        lucide-icon {
+          width: 20px;
+          height: 20px;
+          stroke-width: 1.75;
         }
       }
     }
@@ -169,6 +171,56 @@
         font-size: 0.9rem;
         color: #666;
 
+        &.coupon-row {
+          align-items: flex-start;
+          gap: 8px;
+
+          .coupon-info {
+            display: grid;
+            gap: 4px;
+            .label {
+              font-weight: 600;
+              color: #333;
+            }
+            .coupon-chip {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              background: #fff4f4;
+              color: #c1121f;
+              border: 1px solid #f5c6cb;
+              border-radius: 999px;
+              padding: 6px 10px;
+              font-weight: 700;
+
+              .code {
+                letter-spacing: 0.25px;
+              }
+
+              .detail {
+                color: #8a1c1c;
+                font-weight: 600;
+                font-size: 0.85rem;
+              }
+            }
+          }
+
+          .remove-coupon {
+            border: none;
+            background: transparent;
+            color: #c1121f;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+
+            &:hover {
+              background: #fff4f4;
+            }
+          }
+        }
+
         .shipping-note {
           font-size: 0.75rem;
           color: #4caf50;
@@ -178,6 +230,11 @@
         .amount {
           font-weight: 500;
           color: #333;
+
+          &.discount {
+            color: #059669;
+            font-weight: 700;
+          }
 
           &.free {
             color: #4caf50;
@@ -220,5 +277,97 @@
         transform: scale(0.98);
       }
     }
+  }
+}
+
+/* Checkout prompt bottom-sheet */
+.checkout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1200;
+}
+
+.checkout-sheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem 1.25rem 1.75rem;
+  z-index: 1201;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: slideUp 220ms ease-out;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #111;
+  }
+
+  p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+
+  .sheet-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.2s ease;
+
+      &.primary {
+        background: linear-gradient(90deg, $primary-color, lighten($primary-color, 10%));
+        color: #fff;
+        box-shadow: 0 10px 25px rgba(124, 58, 237, 0.25);
+      }
+
+      &.secondary {
+        background: #f5f5f5;
+        color: #111;
+        border: 1px solid #e5e7eb;
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .sheet-close {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    border: none;
+    background: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #666;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

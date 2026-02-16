@@ -1,0 +1,86 @@
+<section class="addr">
+  
+  <header class="section-header">
+    <div class="section-header__action">
+      <button class="section-header__back" routerLink="/direcciones">
+        <lucide-icon name="arrow-left"></lucide-icon>
+      </button>
+      <button *ngIf="isEditMode" class="section-header__delete" type="button" (click)="deleteAddress()">
+        Eliminar
+      </button>
+    </div>
+    <h1 class="section-header__title">{{ isEditMode ? 'Editar dirección' : 'Nueva dirección' }}</h1>
+    <span class="section-header__subtitle">{{ isEditMode ? 'Actualizá tu información de entrega' : 'Agregá una nueva dirección para tus pedidos' }}</span>
+  </header>
+
+  <form class="addr__card addr__form" (ngSubmit)="save()">
+    <div class="grid">
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.alias" name="alias" placeholder="Alias" required (ngModelChange)="onInputChange()" />
+        <span>Alias (Casa, Oficina)</span>
+      </label>
+      <label class="float-label" [class.has-error]="showError('direccion')">
+        <input
+          type="text"
+          [ngModel]="form.direccion"
+          name="direccion"
+          placeholder="Dirección"
+          required
+          (ngModelChange)="onDireccionInput($event)"
+          (blur)="onDireccionBlur()"
+        />
+        <span>Dirección</span>
+        <div class="autocomplete" *ngIf="direccionLoading || direccionSuggestions.length">
+          <div class="autocomplete__loading" *ngIf="direccionLoading">Buscando direcciones...</div>
+          <button
+            type="button"
+            class="autocomplete__option"
+            *ngFor="let option of direccionSuggestions"
+            (click)="onPlaceSelected(option)"
+          >
+            <lucide-icon name="map-pin"></lucide-icon>
+            <span>{{ option.label }}</span>
+          </button>
+        </div>
+        <div class="input-error" *ngIf="direccionError">
+          <lucide-icon name="circle-alert"></lucide-icon>
+          <p>{{ direccionError }}</p>
+        </div>
+        <div class="input-error" *ngIf="showDireccionInvalid()">
+          <lucide-icon name="circle-alert"></lucide-icon>
+          <p>Seleccioná una dirección de la lista</p>
+        </div>
+        <div class="input-error" *ngIf="showError('direccion')"><lucide-icon name="circle-alert"></lucide-icon><p>Este campo es obligatorio</p></div>
+      </label>
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.pisoDepto" name="pisoDepto" placeholder="Piso / Departamento" (ngModelChange)="onInputChange()" />
+        <span>Piso / Departamento</span>
+      </label>
+      <label class="float-label">
+        <input type="text" [(ngModel)]="form.indicaciones" name="indicaciones" placeholder="Indicaciones para la entrega" (ngModelChange)="onInputChange()" />
+        <span>Indicaciones para la entrega</span>
+      </label>
+      <div class="tipo-selector">
+        <label class="tipo-selector__label">Tipo</label>
+        <div class="tipo-chips">
+          <div class="tipo-chip" 
+               *ngFor="let option of tipoOptions" 
+               (click)="selectTipo(option.value)"
+               [class.selected]="form.tipo === option.value">
+            <lucide-icon [name]="option.icon"></lucide-icon>
+            <span>{{ option.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <label class="checkbox-row">
+      <input type="checkbox" [(ngModel)]="form.principal" name="principal" (ngModelChange)="onInputChange()" />
+      <span>Marcar como principal</span>
+    </label>
+  </form>
+
+  <div class="actions">
+    <button type="submit" class="primary" [disabled]="!canSave()" (click)="save()">Guardar cambios</button>
+  </div>
+</section>

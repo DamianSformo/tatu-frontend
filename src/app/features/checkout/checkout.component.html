@@ -1,0 +1,348 @@
+<div class="checkout">
+  <div class="order-collapse">
+    <button class="order-toggle" type="button" (click)="showOrderDetail = !showOrderDetail">
+      {{ showOrderDetail ? 'Ocultar detalle de la compra' : 'Ver detalle de la compra' }}
+    </button>
+    <div class="order-detail" [class.open]="showOrderDetail">
+      <div class="detail-line" *ngFor="let item of cartProducts">
+        <span>{{ item.quantity }} × {{ item.product.name }}</span>
+        <span>${{ (item.product.price * item.quantity) | number:'1.0-0' }}</span>
+      </div>
+      <div class="detail-line subtotal">
+        <span>Subtotal</span>
+        <span>${{ getSubtotal() | number:'1.0-0' }}</span>
+      </div>
+      <div class="detail-line">
+        <span>Envío</span>
+        <span>{{ getShippingCost() === 0 ? 'Gratis' : ('$' + (getShippingCost() | number:'1.0-0')) }}</span>
+      </div>
+      <div class="detail-line total">
+        <span>Total</span>
+        <span>${{ getFinalTotal() | number:'1.0-0' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="orderPlaced" class="success">
+    <p>¡Gracias por tu compra! Pronto recibirás la confirmación.</p>
+  </div>
+
+  <div *ngIf="!orderPlaced">
+    <div *ngIf="cartProducts.length === 0" class="empty">
+      <p>Tu carrito está vacío.</p>
+    </div>
+
+    <div *ngIf="cartProducts.length > 0" class="steps">
+      <!-- Paso 1: Contacto -->
+      <div class="step-card" [class.active]="step === 1" [class.done]="step > 1">
+        <div class="step-header" (click)="step = 1">
+          <div class="bubble">1</div>
+          <div class="titles">
+            <span class="title">Datos de contacto</span>
+            <small *ngIf="isContactValid()">Completado</small>
+          </div>
+        </div>
+
+        <div class="panel" *ngIf="step === 1">
+          <div class="grid">
+            <label class="float-label">
+              <input type="email" [(ngModel)]="contact.email" placeholder="Email" />
+              <span>Email</span>
+            </label>
+          </div>
+          <div class="actions">
+            <button class="primary" [disabled]="!isContactValid()" (click)="nextStep()">Continuar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2: Envío -->
+      <div class="step-card" [class.active]="step === 2" [class.done]="step > 2">
+        <div class="step-header" (click)="step >= 2 ? step = 2 : null">
+          <div class="bubble">2</div>
+          <div class="titles">
+            <span class="title">Información de envío</span>
+            <small *ngIf="isShippingValid() && step > 2">Completado</small>
+          </div>
+        </div>
+
+        <div class="panel" *ngIf="step === 2">
+          <ng-container *ngIf="!zipConfirmed; else zipConfirmedBlock">
+            <div class="grid">
+              <label class="float-label">
+                <input type="text" [ngModel]="shippingInfo.zip" (ngModelChange)="onZipChange($event)" placeholder="Código postal" />
+                <span>Código postal</span>
+              </label>
+            </div>
+
+            <div class="actions">
+              <button class="primary" [disabled]="!shippingInfo.zip" (click)="confirmZip()">Continuar</button>
+            </div>
+          </ng-container>
+
+          <ng-template #zipConfirmedBlock>
+            <div class="zip-summary">
+              <span>Código postal: {{ shippingInfo.zip }}</span>
+              <button type="button" class="link" (click)="editZip()">Editar</button>
+            </div>
+
+            <div class="flat-options">
+              <div class="group-title" *ngIf="showAllShippingOptions || shippingInfo.selection?.startsWith('pickup')">Retiro por</div>
+              <button
+                *ngIf="showAllShippingOptions || shippingInfo.selection === 'pickup-punto'"
+                type="button"
+                class="chip-option"
+                [class.active]="shippingInfo.selection === 'pickup-punto'"
+                (click)="setShippingSelection('pickup-punto')"
+              >
+                <span class="chip-label">Punto de retiro</span>
+                <span class="chip-price">Gratis</span>
+              </button>
+              <div class="grid" *ngIf="shippingInfo.selection === 'pickup-punto'">
+                <label class="float-label">
+                  <select [(ngModel)]="shippingInfo.pickupOption">
+                    <option *ngFor="let point of pickupPoints" [value]="point">{{ point }}</option>
+                  </select>
+                  <span>Elegí tu punto de retiro</span>
+                </label>
+              </div>
+              <button
+                *ngIf="showAllShippingOptions || shippingInfo.selection === 'pickup-sucursal'"
+                type="button"
+                class="chip-option"
+                [class.active]="shippingInfo.selection === 'pickup-sucursal'"
+                (click)="setShippingSelection('pickup-sucursal')"
+              >
+                <span class="chip-label">Sucursal</span>
+                <span class="chip-price">Gratis</span>
+              </button>
+
+              <div class="group-title" *ngIf="showAllShippingOptions || shippingInfo.selection?.startsWith('home')">Envío a domicilio</div>
+              <button
+                *ngIf="showAllShippingOptions || shippingInfo.selection === 'home-estandar'"
+                type="button"
+                class="chip-option"
+                [class.active]="shippingInfo.selection === 'home-estandar'"
+                (click)="setShippingSelection('home-estandar')"
+              >
+                <span class="chip-label">Correo Argentino estándar</span>
+                <span class="chip-price">
+                  {{ getOptionCost('home-estandar') === 0 ? 'Gratis' : ('$' + (getOptionCost('home-estandar') | number:'1.0-0')) }}
+                </span>
+              </button>
+              <button
+                *ngIf="showAllShippingOptions || shippingInfo.selection === 'home-express'"
+                type="button"
+                class="chip-option"
+                [class.active]="shippingInfo.selection === 'home-express'"
+                (click)="setShippingSelection('home-express')"
+              >
+                <span class="chip-label">Correo Argentino expres</span>
+                <span class="chip-price">
+                  {{ getOptionCost('home-express') === 0 ? 'Gratis' : ('$' + (getOptionCost('home-express') | number:'1.0-0')) }}
+                </span>
+              </button>
+
+              <button *ngIf="!showAllShippingOptions" type="button" class="chip-option ghost" (click)="showAllOptions()">
+                <span class="chip-label">Más opciones</span>
+              </button>
+            </div>
+
+            <div *ngIf="shippingInfo.method === 'home'" class="recipient-form">
+              <h3>Datos del destinatario</h3>
+              <div class="grid">
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="contact.firstName" placeholder="Nombre" />
+                  <span>Nombre</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="contact.lastName" placeholder="Apellido" />
+                  <span>Apellido</span>
+                </label>
+                <label class="float-label">
+                  <input type="tel" [(ngModel)]="contact.phone" placeholder="Teléfono" />
+                  <span>Teléfono</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="shippingInfo.street" placeholder="Calle" />
+                  <span>Dirección</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="shippingInfo.apartment" placeholder="Departamento (opcional)" />
+                  <span>Departamento (opcional)</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="shippingInfo.neighborhood" placeholder="Barrio (opcional)" />
+                  <span>Barrio (opcional)</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="shippingInfo.city" placeholder="Ciudad" />
+                  <span>Ciudad</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Facturación para envío a domicilio -->
+            <div class="recipient-form" *ngIf="shippingInfo.method === 'home'">
+              <h3>Datos de facturación</h3>
+
+              
+
+              <div class="grid">
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.document" placeholder="DNI o CUIT" />
+                  <span>DNI o CUIT</span>
+                </label>
+              </div>
+
+              <label class="float-label checkbox-row">
+                <input type="checkbox" [(ngModel)]="billingSameAsRecipient" />
+                <span>Mis datos de facturación y entrega son los mismos</span>
+              </label>
+
+              <div class="grid" *ngIf="!billingSameAsRecipient">
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.firstName" placeholder="Nombre" />
+                  <span>Nombre</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.lastName" placeholder="Apellido" />
+                  <span>Apellido</span>
+                </label>
+                <label class="float-label">
+                  <input type="tel" [(ngModel)]="billing.phone" placeholder="Teléfono" />
+                  <span>Teléfono</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.address" placeholder="Dirección" />
+                  <span>Dirección</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.apartment" placeholder="Departamento (opcional)" />
+                  <span>Departamento (opcional)</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.neighborhood" placeholder="Barrio (opcional)" />
+                  <span>Barrio (opcional)</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.zip" placeholder="Código postal" />
+                  <span>Código postal</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Facturación para retiro: datos completos -->
+            <div class="recipient-form" *ngIf="shippingInfo.method === 'pickup'">
+              <h3>Datos de facturación</h3>
+              <div class="grid">
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.document" placeholder="DNI o CUIT" />
+                  <span>DNI o CUIT</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.firstName" placeholder="Nombre" />
+                  <span>Nombre</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.lastName" placeholder="Apellido" />
+                  <span>Apellido</span>
+                </label>
+                <label class="float-label">
+                  <input type="tel" [(ngModel)]="billing.phone" placeholder="Teléfono" />
+                  <span>Teléfono</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.address" placeholder="Dirección" />
+                  <span>Dirección</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.apartment" placeholder="Departamento (opcional)" />
+                  <span>Departamento (opcional)</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="billing.neighborhood" placeholder="Barrio (opcional)" />
+                  <span>Barrio (opcional)</span>
+                </label>
+                <label class="float-label">
+                  <input type="text" [(ngModel)]="shippingInfo.zip" (ngModelChange)="onZipChange($event)" placeholder="Código postal" />
+                  <span>Código postal</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="actions dual">
+              <button class="primary" [disabled]="!isShippingValid()" (click)="nextStep()">Continuar al pago</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Paso 3: Pago -->
+      <div class="step-card" [class.active]="step === 3" [class.done]="step > 3">
+        <div class="step-header" (click)="step >= 3 ? step = 3 : null">
+          <div class="bubble">3</div>
+          <div class="titles">
+            <span class="title">Forma de pago</span>
+          </div>
+        </div>
+
+        <div class="panel" *ngIf="step === 3">
+          <div class="payment-methods">
+            <label>
+              <input type="radio" [(ngModel)]="payment.method" value="card" />
+              Tarjeta de crédito/débito
+            </label>
+            <label>
+              <input type="radio" [(ngModel)]="payment.method" value="transfer" />
+              Transferencia o efectivo
+            </label>
+          </div>
+
+          <div class="grid" *ngIf="payment.method === 'card'">
+            <label class="float-label">
+              <input type="text" [(ngModel)]="payment.cardNumber" placeholder="Número de tarjeta" />
+              <span>Número de tarjeta</span>
+            </label>
+            <label class="float-label">
+              <input type="text" [(ngModel)]="payment.cardName" placeholder="Titular" />
+              <span>Titular</span>
+            </label>
+            <div class="inline">
+              <label class="float-label">
+                <input type="text" [(ngModel)]="payment.expiry" placeholder="Vencimiento (MM/AA)" />
+                <span>Vencimiento</span>
+              </label>
+              <label class="float-label">
+                <input type="password" [(ngModel)]="payment.cvv" placeholder="CVV" />
+                <span>CVV</span>
+              </label>
+            </div>
+            <label class="float-label">
+              <select [(ngModel)]="payment.installments">
+                <option [value]="1">1 cuota</option>
+                <option [value]="3">3 cuotas</option>
+                <option [value]="6">6 cuotas</option>
+                <option [value]="12">12 cuotas</option>
+              </select>
+              <span>Cuotas</span>
+            </label>
+          </div>
+
+          <div class="total-box">
+            <div>
+              <span class="label">Total a pagar</span>
+              <div class="amount">${{ getFinalTotal() | number:'1.0-0' }}</div>
+              <small>Incluye envío: {{ getShippingCost() === 0 ? 'Gratis' : ('$' + (getShippingCost() | number:'1.0-0')) }}</small>
+            </div>
+          </div>
+
+          <div class="actions dual">
+            <button class="secondary" (click)="prevStep()">Atrás</button>
+            <button class="primary" [disabled]="!isPaymentValid()" (click)="confirmPurchase()">Confirmar compra</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

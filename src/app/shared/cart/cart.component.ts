@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../../services/cart.service';
+import { Router } from '@angular/router';
+import { CartCoupon, CartService } from '../../services/cart.service';
+import { UiService } from '../../services/ui.service';
 import { Product, WineProduct, BeerProduct } from '../models/product.model';
 import { getMockProducts } from '../mocks/mock-products';
 
@@ -11,13 +13,19 @@ import { getMockProducts } from '../mocks/mock-products';
 export class CartComponent implements OnInit {
   cartItems: { id: number; quantity: number }[] = [];
   cartProducts: Array<{ product: Product; quantity: number }> = [];
+  showCheckoutPrompt = false;
+  appliedCoupon: CartCoupon | null = null;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router, private uiService: UiService) {}
 
   ngOnInit() {
     this.cartService.cart$.subscribe(items => {
       this.cartItems = items;
       this.resolveCartProducts();
+    });
+
+    this.cartService.coupon$.subscribe(coupon => {
+      this.appliedCoupon = coupon;
     });
   }
 
@@ -71,6 +79,28 @@ export class CartComponent implements OnInit {
   }
 
   /**
+   * Calcula el descuento aplicado por cupón respetando mínimo de compra y tope de reintegro.
+   */
+  getDiscount(): number {
+    if (!this.appliedCoupon) return 0;
+
+    const subtotal = this.getSubtotal();
+    if (subtotal <= 0) return 0;
+
+    const minPurchase = this.appliedCoupon.minPurchaseValue ?? 0;
+    if (minPurchase > 0 && subtotal < minPurchase) return 0;
+
+    const percent = this.appliedCoupon.discountPercent ?? 0;
+    if (percent <= 0) return 0;
+
+    const raw = subtotal * (percent / 100);
+    const cap = this.appliedCoupon.maxRebateValue ?? raw;
+    const discount = Math.min(raw, cap);
+
+    return Math.max(0, discount);
+  }
+
+  /**
    * Calcula el costo de envío (fijo: $500, o gratis si subtotal >= $10000).
    */
   getShippingCost(): number {
@@ -82,6 +112,32 @@ export class CartComponent implements OnInit {
    * Calcula el total final (subtotal + envío).
    */
   getFinalTotal(): number {
-    return this.getSubtotal() + this.getShippingCost();
+    const total = this.getSubtotal() - this.getDiscount() + this.getShippingCost();
+    return Math.max(0, total);
+  }
+
+  removeCoupon() {
+    this.cartService.clearCoupon();
+  }
+
+  goToCheckout() {
+    this.showCheckoutPrompt = true;
+  }
+
+  closePrompt() {
+    this.showCheckoutPrompt = false;
+  }
+
+  proceedAsGuest() {
+    this.showCheckoutPrompt = false;
+    this.uiService.closeCart();
+    this.router.navigate(['/checkout']);
+  }
+
+  startLogin() {
+    this.showCheckoutPrompt = false;
+    this.uiService.closeCart();
+    // Navegamos al checkout indicando intención de login; ajusta la ruta si tienes una pantalla de auth dedicada.
+    this.router.navigate(['/checkout'], { queryParams: { mode: 'login' } });
   }
 }

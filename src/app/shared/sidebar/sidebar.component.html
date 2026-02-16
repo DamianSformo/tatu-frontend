@@ -1,7 +1,7 @@
 <nav class="sidebar" [class.open]="isOpen">
   <div *ngIf="history.length > 0" class="sidebar-header">
     <button  class="back-button" (click)="navigateBack()">
-      <span class="material-icons">arrow_back</span> <span>volver</span>
+      <lucide-icon name="arrow-left"></lucide-icon> <span>volver</span>
     </button>
     <div class="sidebar-title">{{ selectedItem?.name }}</div>
   </div>
@@ -13,7 +13,7 @@
         <li *ngFor="let item of menuTienda">
           <div class="menu-item" (click)="navigateForward(item)">
             {{ item.name }}
-            <span class="material-icons arrow">chevron_right</span>
+            <lucide-icon class="arrow" name="chevron-right"></lucide-icon>
           </div>
         </li>
       </ul>
@@ -26,7 +26,7 @@
         <li *ngFor="let item of menuData">
           <div class="menu-item" (click)="navigateForward(item)">
             {{ item.name }}
-            <span *ngIf="item.subItems" class="material-icons arrow">chevron_right</span>
+            <lucide-icon *ngIf="item.subItems" class="arrow" name="chevron-right"></lucide-icon>
           </div>
         </li>
       </ul>
@@ -45,7 +45,7 @@
     class="menu-item-image"
   />
   <span class="menu-item-text">{{ item.name }}</span>
-  <span class="material-icons arrow">chevron_right</span>
+  <lucide-icon class="arrow" name="chevron-right"></lucide-icon>
 </div>
       </li>
     </ul>

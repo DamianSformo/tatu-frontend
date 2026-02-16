@@ -5,7 +5,7 @@
     <!-- ===== BOTÓN DE FILTROS ===== -->
     <div class="filter-button">
       <button (click)="toggleFilters()">
-        <span class="material-icons">filter_list</span>
+        <lucide-icon name="sliders-horizontal"></lucide-icon>
       </button>
     </div>
 
@@ -13,7 +13,7 @@
     <div class="search-box">
       
       <!-- Icono de búsqueda -->
-      <span class="material-icons search-icon">search</span>
+      <lucide-icon class="search-icon" name="search"></lucide-icon>
       
       <!-- Input de búsqueda -->
       <input
@@ -31,7 +31,7 @@
         [class.disabled]="isCategorySelectionDisabled"
       >
         {{ initialCategoryName }}
-        <span class="material-icons" >expand_more</span>
+        <lucide-icon name="chevron-down"></lucide-icon>
 
         <!-- Panel desplegable de categorías -->
         <div class="search-and-panel-wrapper">
@@ -57,12 +57,17 @@
   </div>
 </div>
 
+<!-- Overlay para filtros -->
+<div class="filters-overlay" *ngIf="showFilters" (click)="closeFilters()"></div>
 <!-- ===== PANEL DESPLEGABLE DE FILTROS ===== -->
 <div class="filters-panel" *ngIf="showFilters">
   <div class="filters-content">
     
     <!-- Título del panel -->
     <h3>Filtros</h3>
+    <button class="btn-close-x" (click)="closeFilters()" aria-label="Cerrar">
+        <lucide-icon name="x"></lucide-icon>
+      </button>
 
     <!-- ===== GRUPOS DE FILTROS ===== -->
     <div *ngFor="let f of activeFilters" class="filter-group">
@@ -70,14 +75,17 @@
       <!-- ===== HEADER DEL FILTRO (ACORDEÓN) ===== -->
       <div class="filter-header" (click)="toggleFilter(f)">
         <span class="filter-title">{{ f.label }}</span>
-        <span class="material-icons">
-          {{ f.open ? 'expand_less' : 'expand_more' }}
-        </span>
+        <lucide-icon [name]="f.open ? 'chevron-up' : 'chevron-down'"></lucide-icon>
       </div>
 
       <!-- ===== RESUMEN DE OPCIONES SELECCIONADAS ===== -->
-      <div class="filter-summary" *ngIf="!f.open && f.value?.length">
+      <div class="filter-summary" *ngIf="!f.open && f.value?.length && f.key !== 'order'">
         {{ f.value.join(', ') }}
+      </div>
+
+      <!-- ===== RESUMEN PARA RADIO (MUESTRA LA OPCIÓN SELECCIONADA) ===== -->
+      <div class="filter-summary" *ngIf="!f.open && f.value && f.key === 'order'">
+        {{ f.value }}
       </div>
 
       <!-- ===== CONTENIDO DEL FILTRO (SE EXPANDE AL HACER CLICK) ===== -->
@@ -86,12 +94,35 @@
         <!-- ===== FILTRO TIPO CHECKBOX (PILLS) ===== -->
         <div *ngIf="f.type === 'checkbox'" class="checkbox-pills">
           <div 
-            *ngFor="let opt of f.options" 
+            *ngFor="let opt of getOptionsWithCount(f)" 
             class="pill" 
-            [class.selected]="f.value.includes(opt)"
-            (click)="toggleOption(f, opt)"
+            [class.selected]="f.value.includes(opt.value)"
+            [class.disabled]="opt.count === 0"
+            (click)="opt.count !== 0 && toggleOption(f, opt.value)"
           >
-            {{ opt }}
+            {{ opt.label }}
+          </div>
+        </div>
+
+        <!-- ===== FILTRO TIPO RADIO (UNA SOLA OPCIÓN) - ESTILO SELECT ===== -->
+        <div *ngIf="f.type === 'radio'" class="radio-options">
+          <div class="options-dropdown" *ngIf="f.open">
+            <div 
+              class="option-item" 
+              *ngFor="let opt of f.options"
+              [class.selected]="f.value === opt"
+            >
+              <label>
+                <input
+                  type="radio"
+                  [value]="opt"
+                  [(ngModel)]="f.value"
+                  [name]="f.key"
+                />
+                
+                <span class="text-radio">{{ opt }}</span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -101,7 +132,7 @@
             
             <!-- Input de búsqueda interno -->
             <div class="search-box">
-              <span class="material-icons search-icon">search</span>
+              <lucide-icon class="search-icon" name="search"></lucide-icon>
               <input
                 type="text"
                 placeholder="Buscar..."
@@ -111,20 +142,26 @@
             </div>
 
             <!-- Lista filtrada de opciones con "Ver más" -->
-            <div class="option-item" *ngFor="let opt of ((f.options ?? []) | filter: (f.searchTerm ?? '')) | slice:0:(f.showAllOptions ? (f.options?.length || 0) : 5)">
-              <label>
+            <div 
+              class="option-item" 
+              *ngFor="let opt of ((f.optionsWithCount ?? []) | filter: (f.searchTerm ?? '')) | slice:0:(f.showAllOptions ? (f.optionsWithCount?.length || 0) : 5)"
+              [class.disabled]="opt.count === 0"
+            >
+              <label class="option-label-flex" [class.disabled]="opt.count === 0">
                 <input
                   type="checkbox"
-                  [checked]="f.value.includes(opt)"
-                  (change)="toggleOption(f, opt)"
+                  [checked]="f.value.includes(opt.value)"
+                  [disabled]="opt.count === 0"
+                  (change)="toggleOption(f, opt.value)"
                 />
                 <span class="custom-checkbox"></span>
-                <span class="text-checkbox">{{ opt }}</span>
+                <span class="text-checkbox">{{ opt.label }}</span>
+                <span class="option-count">{{ opt.count }}</span>
               </label>
             </div>
 
             <!-- Botón Ver más/menos -->
-            <button class="btn-view-more" *ngIf="f.options && f.options.length > 5" (click)="toggleShowAllOptions(f)">
+            <button class="btn-view-more" *ngIf="f.optionsWithCount && f.optionsWithCount.length > 5" (click)="toggleShowAllOptions(f)">
               {{ f.showAllOptions ? 'Ver menos' : 'Ver más' }}
             </button>
             
@@ -133,33 +170,34 @@
 
         <!-- ===== FILTRO TIPO SELECT SIMPLE (IGUAL AL SELECT-SEARCH PERO SIN LUPA) ===== -->
 <div *ngIf="f.type === 'select'" class="select-simple">
-
   <div class="options-dropdown" *ngIf="f.open">
 
     <div 
       class="option-item" 
-      *ngFor="let opt of (f.options ?? []) | slice:0:(f.showAllOptions ? (f.options?.length || 0) : 5)"
-      [class.selected]="f.value.includes(opt)"
+      *ngFor="let opt of (f.optionsWithCount ?? []) | slice:0:(f.showAllOptions ? (f.optionsWithCount?.length || 0) : 5)"
+      [class.selected]="f.value.includes(opt.value)"
+      [class.disabled]="opt.count === 0"
     >
-      <label>
+      <label class="option-label-flex" [class.disabled]="opt.count === 0">
         <input
           type="checkbox"
-          [checked]="f.value.includes(opt)"
-          (change)="toggleOption(f, opt)"
+          [checked]="f.value.includes(opt.value)"
+          [disabled]="opt.count === 0"
+          (change)="toggleOption(f, opt.value)"
         />
         <span class="custom-checkbox"></span>
-        <span class="text-checkbox">{{ opt }}</span>
+        <span class="text-checkbox">{{ opt.label }}</span>
+        <span class="option-count">{{ opt.count }}</span>
       </label>
     </div>
 
     <!-- Botón Ver más/menos -->
-    <button class="btn-view-more" *ngIf="f.options && f.options.length > 5" (click)="toggleShowAllOptions(f)">
+    <button class="btn-view-more" *ngIf="f.optionsWithCount && f.optionsWithCount.length > 5" (click)="toggleShowAllOptions(f)">
       {{ f.showAllOptions ? 'Ver menos' : 'Ver más' }}
     </button>
 
   </div>
 </div>
-
 
         <!-- ===== FILTRO DE RANGO DE PRECIO COMPLETO ===== -->
         <div *ngIf="f.type === 'price-range'" class="range-filter">
@@ -216,11 +254,17 @@
     </div>
 
     <!-- ===== BOTONES DE ACCIÓN DEL PANEL ===== -->
-    <div class="filters-actions">
-      <button class="btn-clear" (click)="clearFilters()">Borrar</button>
-      <button class="btn-close" (click)="closeFilters()">Cerrar</button>
-      <button class="btn-apply" (click)="applyFilterChanges()">Aplicar</button>
+    <div class="filters-actions-custom">
+      <!-- Botón Cerrar (cruz) arriba derecha -->
+      
+
+      <!-- Botón Borrar abajo izquierda -->
+      <button class="btn-clear-custom" (click)="clearFilters()">Borrar</button>
+
+      <!-- Botón Aplicar abajo derecha -->
+      <button class="btn-apply-custom" (click)="applyFilterChanges()">
+        Mostrar {{ filteredProductsCount }} producto{{ filteredProductsCount === 1 ? '' : 's' }}
+      </button>
     </div>
-    
   </div>
 </div>

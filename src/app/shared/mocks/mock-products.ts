@@ -8,8 +8,8 @@ export const MOCK_WINES: Product[] = [
     productType: 'wine',
     imageUrl: 'assets/image 12.png',
     isNew: true,
-    brand: 'Cafayate',
-    name: 'Vino Blanco Cafayate 750 ml',
+    brand: 'Cafayates',
+    name: 'Vino Blanco 750 ml',
     oldPrice: 7529,
     price: 5029,
     discount: 15,
@@ -17,8 +17,10 @@ export const MOCK_WINES: Product[] = [
     rating: 4.8,
     reviewsCount: 5,
     pricePerLiter: '$9.010,50',
-    year: 2023,
-    origin: 'Argentina',
+    year: 2022,
+    origin: 'Chile',
+    region: 'Santiago',
+    variety: 'Torrontés',
     type: 'Blanco',
     body: 100,
     acidity: 50,
@@ -29,6 +31,7 @@ export const MOCK_WINES: Product[] = [
     color: 'Amarillo pálido con reflejos verdosos',
     aroma: 'Notas cítricas y florales',
     gusto: 'Fresco, frutado y equilibrado',
+    notasDeCata: 'Vino fresco, con notas cítricas y florales, equilibrado en boca.' ,
     barrica: '6 meses',
     servicio: 'Entre 8°C y 10°C'
   },
@@ -60,6 +63,7 @@ export const MOCK_WINES: Product[] = [
     color: 'Rojo intenso con matices violáceos',
     aroma: 'Aromas a frutos rojos y especias',
     gusto: 'Estructurado, con taninos suaves y final persistente',
+    notasDeCata: 'Aromas a frutos rojos y especias, con un final persistente y taninos suaves.' ,
     servicio: '16°C'
   }
 ];

@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CartService } from '../../services/cart.service';
+import { UiService } from '../../services/ui.service';
 import { Product } from '../../shared/models/product.model';
 
 @Component({
@@ -12,9 +14,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Output() menuToggled = new EventEmitter<void>();
 
   promos = [
-    { icon: 'local_offer', text: 'Descuento en efectivo' },
-    { icon: 'shopping_bag', text: '6x5 en toda la tienda' },
-    { icon: 'credit_card', text: '3 cuotas sin interés desde $45.000' }
+    { icon: 'tag', text: 'Descuento en efectivo' },
+    { icon: 'shopping-bag', text: '6x5 en toda la tienda' },
+    { icon: 'credit-card', text: '3 cuotas sin interés desde $45.000' }
   ];
 
   currentPromoIndex = 0;
@@ -22,24 +24,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   cartCount = 0; // 🔹 contador reactivo del carrito
   isCartOpen = false; // 🔹 state para slide del carrito
-  private cartSubscription: any;
+  private cartSubscription?: Subscription;
+  private cartOpenSubscription?: Subscription;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private uiService: UiService) {}
 
   ngOnInit() {
     this.startCarousel();
 
     // 🔹 Suscribirse a los cambios del carrito
-this.cartSubscription = this.cartService.cart$.subscribe(items => {
-  // Contamos la cantidad total sumando quantity de cada item
-  this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
-});
+    this.cartSubscription = this.cartService.cart$.subscribe(items => {
+      // Contamos la cantidad total sumando quantity de cada item
+      this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
+    });
+
+    // 🔹 Suscribirse a los cambios de visibilidad del carrito
+    this.cartOpenSubscription = this.uiService.cartOpen$.subscribe(isOpen => {
+      this.isCartOpen = isOpen;
+    });
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
+    }
+    if (this.cartOpenSubscription) {
+      this.cartOpenSubscription.unsubscribe();
     }
   }
 
@@ -54,10 +65,10 @@ this.cartSubscription = this.cartService.cart$.subscribe(items => {
   }
 
   toggleCartSlide() {
-    this.isCartOpen = !this.isCartOpen;
+    this.uiService.toggleCart();
   }
 
   closeCartSlide() {
-    this.isCartOpen = false;
+    this.uiService.closeCart();
   }
 }

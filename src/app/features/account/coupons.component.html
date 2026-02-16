@@ -1,0 +1,61 @@
+<section class="coupons">
+
+  <header class="section-header">
+    <div class="section-header__action">
+      <button class="section-header__back" routerLink="/perfil">
+        <lucide-icon name="arrow-left"></lucide-icon>
+      </button>
+    </div>
+    <h1 class="section-header__title">Mis cupones</h1>
+    <span class="section-header__subtitle">Agregá tus direcciones y pedí más rápido</span>
+  </header>
+
+  <section class="coupons__list">
+    <article class="coupon-card" *ngFor="let coupon of coupons" [class.redeemed]="coupon.status === 'redimido'">
+
+      <div class="coupon-card__badge">
+        <lucide-icon name="credit-card" size="28"></lucide-icon>
+      </div>
+
+      <div class="coupon-card__heading">
+        <h2 class="coupon-card__title">{{ coupon.title }}</h2>
+        <p class="coupon-card__subtitle">{{ coupon.detail }}</p>
+      </div>
+
+      <ul class="coupon-card__meta">
+        <li class="coupon-card__meta-item">
+          <lucide-icon name="shopping-cart" size="18"></lucide-icon>
+          <div>
+            <span class="coupon-card__meta-label">Compra mínima</span>
+            <span class="coupon-card__meta-value">{{ coupon.minPurchase }}</span>
+          </div>
+        </li>
+        <li class="coupon-card__meta-item">
+          <lucide-icon name="dollar-sign" size="18"></lucide-icon>
+          <div>
+            <span class="coupon-card__meta-label">Tope de reintegro</span>
+            <span class="coupon-card__meta-value">{{ coupon.maxRebate }}</span>
+          </div>
+        </li>
+        <li class="coupon-card__meta-item">
+          <lucide-icon name="calendar" size="18"></lucide-icon>
+          <div>
+            <span class="coupon-card__meta-label">Válido hasta</span>
+            <span class="coupon-card__meta-value">{{ coupon.expires }}</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="coupon-card__footer">
+        <span class="coupon-card__validity">
+          <lucide-icon name="clock" size="16"></lucide-icon>
+          <span>Válido hasta {{ coupon.expires }}</span>
+        </span>
+
+        <button type="button" class="coupon-card__apply" *ngIf="coupon.status === 'activo'" (click)="applyCoupon(coupon)">
+          Usar cupón
+        </button>
+      </div>
+    </article>
+  </section>
+</section>

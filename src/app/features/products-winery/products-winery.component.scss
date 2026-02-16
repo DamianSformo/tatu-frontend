@@ -1,0 +1,12 @@
+h5 {
+	display: flex;
+	padding: 0 5%;
+	margin-top: 15px;
+	margin-bottom: 2rem;
+
+	::ng-deep a.plain-link {
+		text-decoration: none !important;
+		color: inherit !important;
+		cursor: pointer !important;
+	}
+}

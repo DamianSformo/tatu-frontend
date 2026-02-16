@@ -10,11 +10,11 @@
 
         <div class="icons">
             <button class="icon-button">
-                <span class="material-symbols-sharp">person_3</span>
+                <lucide-icon name="user-round" [strokeWidth]="1"></lucide-icon>
             </button>
-            
+
             <button class="icon-button cart-icon" (click)="toggleCartSlide()">
-              <span class="material-symbols-sharp">shopping_cart</span>
+              <lucide-icon name="shopping-cart" [strokeWidth]="1"></lucide-icon>
               <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
             </button>
         </div>
@@ -28,7 +28,7 @@
       [class.active]="i === currentPromoIndex"
       [class.prev]="i === (currentPromoIndex === 0 ? promos.length - 1 : currentPromoIndex - 1)"
     >
-      <span class="material-icons">{{ promo.icon }}</span>
+      <lucide-icon [name]="promo.icon"></lucide-icon>
       <span class="promo-text">{{ promo.text }}</span>
     </div>
   </div>
@@ -42,7 +42,7 @@
     <div class="cart-slide-header">
       <h2>Tu Carrito</h2>
       <button class="close-btn" (click)="closeCartSlide()">
-        <span class="material-symbols-sharp">close</span>
+        <lucide-icon name="x"></lucide-icon>
       </button>
     </div>
     <div class="cart-slide-content">

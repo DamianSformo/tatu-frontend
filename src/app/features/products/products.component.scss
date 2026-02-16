@@ -1,6 +1,64 @@
-h5{
-    display: flex;
-    padding: 0 5%;
-    margin-top: 15px;
-    margin-bottom: 2rem;
+@use 'src/variables' as *;
+
+.products-hero {
+    text-align: center;
+    padding: 2rem 5% 1rem;
+
+    .breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-transform: lowercase;
+        color: #222;
+
+        .crumb {
+            &.muted {
+                color: #b3b3b3;
+            }
+        }
+
+        .dot {
+            color: #9a9a9a;
+            font-weight: 400;
+        }
+    }
+
+    .page-title {
+        margin: 2rem 0 0;
+        font-size: 2.5rem;
+        font-weight: 200;
+        line-height: 1.05;
+        text-transform: lowercase;
+        color: #1f1f1f;
+    }
+
+    .results-count {
+        margin: 0 0 2.1rem;
+        font-size: 0.8rem;
+        color: $color-100;
+        font-weight: 200;
+    }
+}
+
+.search-filter-wrapper {
+    padding: 0 5% 1.5rem;
+}
+
+.search-term-banner {
+    padding: 0.5rem 5% 1rem;
+    color: #4a4a4a;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 720px) {
+    .products-hero {
+        padding: 0.5rem 6% 0.5rem;
+
+        .page-title {
+            font-size: 5rem;
+            font-weight: 200;
+        }
+    }
 }

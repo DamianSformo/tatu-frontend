@@ -1,0 +1,119 @@
+@import '../../../_variables.scss';
+@import '../../shared/styles/header';
+
+.account {
+  min-height: 100%;
+  background: $background-color;
+  padding: 1rem 5% 3rem;
+  color: $text-color;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.account-header {
+  @extend %section-header;
+
+  .section-header__action {
+    @extend %section-header-action;
+  }
+
+  &__back {
+    @extend %section-header-back;
+
+    lucide-icon {
+      @extend %section-header-back-icon;
+    }
+  }
+
+  &__title {
+    @extend %section-header-title;
+  }
+}
+
+.account-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__item {
+    padding: 1.1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+  }
+
+  &__label {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #222;
+    margin-bottom: 0.18rem;
+  }
+
+  &__desc {
+    font-size: 1rem;
+    color: $color-25;
+    font-weight: 300;
+    margin-bottom: 0;
+  }
+
+  &__right-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    background: #f3f3f3;
+    color: #444;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 7px;
+    padding: 0.18em 0.7em 0.18em 0.5em;
+    margin-right: 0.1em;
+  }
+
+  &__badge-icon {
+    width: 1em !important;
+    height: 1em !important;
+    color: #7acb8a;
+    stroke-width: 2.2;
+  }
+
+  &__chevron {
+    color: #b3b3b3;
+    width: 1.2em !important;
+    height: 1.2em !important;
+    stroke-width: 2.2;
+  }
+
+  &__email {
+    margin: 0.05rem 0;
+    color: $primary-color;
+    opacity: 0.7;
+    font-size: 0.95rem;
+  }
+
+  &__pill {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background: rgba($accent-color, 0.12);
+    color: $accent-color;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+}
+

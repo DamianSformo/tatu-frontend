@@ -1,28 +1,38 @@
-<h5>{{ categoryName }}</h5>
+<section class="products-hero">
+  <div class="breadcrumb">
+    <span class="crumb">tatú</span>
+    <span class="dot">·</span>
+    <span class="crumb">bebidas</span>
+    <span class="dot">·</span>
+    <span class="crumb muted">{{ categoryName || 'vinos' }}</span>
+  </div>
 
-<!-- 🔹 Mostrar término de búsqueda si existe -->
+  <h1 class="page-title">{{ (categoryName || 'vinos') }}</h1>
+  <p class="results-count">{{ filteredProducts.length }} resultado{{ filteredProducts.length === 1 ? '' : 's' }}</p>
+</section>
 
-<app-search-filter
-  [categories]="[
-    { key: 'wine', name: 'Vinos' },
-    { key: 'beer', name: 'Cervezas' },
-    { key: 'whisky', name: 'Whiskys' },
-    { key: 'grocery', name: 'Almacén' },
-    { key: 'accessories', name: 'Accesorios' }
-  ]"
-  [initialCategoryKey]="selectedCategoryKey"
-  [initialCategoryName]="categoryName"
-  [products]="products"
-  (applyFilters)="onApplyFilters($event)"
-  (categoryChange)="onCategoryChange($event)"
-  (search)="onApplyFilters({ query: $event, filters: [] })">
-</app-search-filter>
+<div class="search-filter-wrapper">
+  <app-search-filter
+    [categories]="[
+      { key: 'wine', name: 'Vinos' },
+      { key: 'beer', name: 'Cervezas' },
+      { key: 'whisky', name: 'Whiskys' },
+      { key: 'grocery', name: 'Almacén' },
+      { key: 'accessories', name: 'Accesorios' }
+    ]"
+    [initialCategoryKey]="selectedCategoryKey"
+    [initialCategoryName]="categoryName"
+    [products]="products"
+    (applyFilters)="onApplyFilters($event)"
+    (categoryChange)="onCategoryChange($event)"
+    (search)="onApplyFilters({ query: $event, filters: [] })">
+  </app-search-filter>
+</div>
 
-<div *ngIf="searchTerm" >
-<p class="text-gray-600 mb-2">
-  🔍 Término de búsqueda: <strong>{{ searchTerm }}</strong>
-</p>
-
+<div *ngIf="searchTerm" class="search-term-banner">
+  <p>
+    🔍 Término de búsqueda: <strong>{{ searchTerm }}</strong>
+  </p>
 </div>
 
 <app-product-list [products]="filteredProducts"></app-product-list>

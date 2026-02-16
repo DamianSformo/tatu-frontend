@@ -1,0 +1,159 @@
+<section class="hero">
+  <div class="hero__copy">
+    <p class="hero__eyebrow">Club Tatú</p>
+    <h1 class="hero__title">Suscripciones pensadas para disfrutar el vino sin complicaciones</h1>
+    <p class="hero__subtitle">
+      Elegí el plan que mejor se adapta a tu mesa. Cada envío llega con maridajes sugeridos,
+      historias de bodega y acceso a beneficios exclusivos de Tatú.
+    </p>
+
+    <div class="hero__cta">
+      <button class="btn btn-primary" type="button" (click)="scrollToPlans()">Ver planes</button>
+      <button class="btn btn-ghost" type="button">Hablar con un sommelier</button>
+    </div>
+
+    <div class="hero__highlights">
+      <div class="chip" *ngFor="let item of heroHighlights">
+        <lucide-icon [name]="item.icon"></lucide-icon>
+        <span>{{ item.text }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__panel">
+    <div class="hero__panel-card">
+      <div class="panel__badge">Curaduría Tatú</div>
+      <h3>Vinos listos para descorchar</h3>
+      <p>Rotamos etiquetas cada mes para que pruebes bodegas emergentes y clásicos de guarda.</p>
+      <div class="panel__stats">
+        <div>
+          <span class="label">Bodegas aliadas</span>
+          <strong>35+</strong>
+        </div>
+        <div>
+          <span class="label">Puntajes medios</span>
+          <strong>92 pts</strong>
+        </div>
+        <div>
+          <span class="label">Envíos</span>
+          <strong>100% asegurados</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plans" id="planes">
+  <div class="section__header">
+    <div>
+      <p class="section__eyebrow">Planes del club</p>
+      <h2>Suscripciones con beneficios claros y vinos que sorprenden</h2>
+      <p class="section__subtitle">Cada plan incluye vinos curados, descuentos en la tienda y acompañamiento del equipo Tatú.</p>
+    </div>
+    <div class="carousel-controls">
+      <button type="button" class="control-btn" (click)="scrollPlans('prev')">
+        <lucide-icon name="chevron-left"></lucide-icon>
+      </button>
+      <button type="button" class="control-btn" (click)="scrollPlans('next')">
+        <lucide-icon name="chevron-right"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="plans__track" #plansTrack (scroll)="onPlansScroll()">
+    <article class="plan-card" *ngFor="let plan of plans">
+      <div class="plan-card__header">
+        <div class="plan-card__titles">
+          <h3>{{ plan.name }}</h3>
+        </div>
+      </div>
+
+      <div class="plan-card__price plan-card__price--full">
+        <span class="value">{{ getDisplayPrice(plan) }}</span>
+        <span class="freq">/{{ plan.frequency }}</span>
+      </div>
+
+      <div class="plan-card__options">
+        <button
+          type="button"
+          class="option-pill"
+          *ngFor="let opt of plan.bottleOptions"
+          [class.active]="(selectedBottleOption[plan.id] ?? plan.bottleOptions[0]?.count) === opt.count"
+          (click)="selectBottleOption(plan.id, opt)"
+        >
+          {{ opt.count }} botellas
+        </button>
+      </div>
+
+      <p class="plan-card__description">{{ plan.description }}</p>
+
+      <div class="plan-card__benefits">
+        <div class="benefits__title">
+          <lucide-icon name="sparkles"></lucide-icon>
+          <h4>Beneficios</h4>
+        </div>
+        <ul>
+          <li *ngFor="let benefit of plan.benefits">
+            <lucide-icon name="badge-check"></lucide-icon>
+            <span>{{ benefit }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="plan-card__footer">
+        <button class="btn btn-ghost" type="button" (click)="viewSelection(plan)">Ver selección del mes</button>
+        <button class="btn btn-primary">Quiero este plan</button>
+      </div>
+    </article>
+  </div>
+
+  <div class="plans__dots">
+    <button
+      type="button"
+      *ngFor="let plan of plans; let i = index"
+      [class.active]="i === currentPlanIndex"
+      (click)="scrollToPlan(i)"
+      [attr.aria-label]="'Ir al plan ' + plan.name"
+    ></button>
+  </div>
+</section>
+
+<section class="perks">
+  <div class="section__header">
+    <div>
+      <p class="section__eyebrow">Beneficios de ser miembro</p>
+      <h2>Mucho más que botellas</h2>
+    </div>
+  </div>
+
+  <div class="perks__grid">
+    <div class="perk" *ngFor="let perk of clubPerks">
+      <lucide-icon [name]="perk.icon"></lucide-icon>
+      <div>
+        <h4>{{ perk.title }}</h4>
+        <p>{{ perk.text }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flow">
+  <div class="section__header">
+    <div>
+      <p class="section__eyebrow">Cómo funciona</p>
+      <h2>Suscribite en tres pasos</h2>
+    </div>
+  </div>
+  <div class="flow__steps">
+    <div class="step" *ngFor="let step of flowSteps; let i = index">
+      <div class="step__index">0{{ i + 1 }}</div>
+      <div class="step__body">
+        <lucide-icon [name]="step.icon"></lucide-icon>
+        <div>
+          <h4>{{ step.title }}</h4>
+          <p>{{ step.text }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

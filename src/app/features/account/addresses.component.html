@@ -1,0 +1,40 @@
+<section class="addr">
+  
+  <header class="section-header">
+    <div class="section-header__action">
+      <button class="section-header__back" routerLink="/perfil">
+        <lucide-icon name="arrow-left"></lucide-icon>
+      </button>
+    </div>
+    <h1 class="section-header__title">Direcciones</h1>
+    <span class="section-header__subtitle">Agregá tus direcciones y pedí más rápido</span>
+  </header>
+
+  <section class="addr__list" *ngIf="addresses.length > 0">
+    <article class="addr__item" *ngFor="let a of addresses; let i = index" (click)="editAddress(i)" [class.addr__item--primary]="a.principal">
+      <div class="addr__icon" [class.addr__icon--primary]="a.principal">
+        <lucide-icon [name]="iconFor(a.tipo)"></lucide-icon>
+      </div>
+      <div class="addr__text">
+        <p class="addr__alias">{{ a.alias }}</p>
+        <p class="addr__address">
+          {{ a.direccion }}, {{ a.pisoDepto }}
+        </p>
+        <span class="addr__indication" *ngIf="a.indicaciones">{{ a.indicaciones }}</span>
+        <span class="addr__tag" *ngIf="a.principal">Principal</span>
+      </div>
+      <lucide-icon name="chevron-right" class="addr__chevron"></lucide-icon>
+    </article>
+  </section>
+
+  <div class="addr__empty" *ngIf="addresses.length === 0">
+    <p>No tienes direcciones aún.</p>
+  </div>
+</section>
+
+<div class="actions">
+  <button type="button" class="primary" (click)="startAdd()">
+    <lucide-icon name="plus"></lucide-icon>
+    <span>Añadir dirección</span>  
+  </button>
+</div>

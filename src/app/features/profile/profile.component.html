@@ -1,0 +1,48 @@
+<section class="profile">
+  <header class="profile__top">
+    <div>
+      <h1 class="profile__title">Hola, {{ user.name }}</h1>
+    </div>
+  </header>
+
+  <section class="profile__main-menu">
+    <div class="profile__main-menu-grid">
+      <div class="profile__main-menu-item" *ngFor="let card of quickCards; let i = index" (click)="navigateTo(card)" tabindex="0" role="button">
+        <div class="profile__main-menu-icon" [ngClass]="{'main-menu-suscripcion': card.icon === 'crown'}">
+          <lucide-icon [name]="card.icon" [strokeWidth]="1.25" [ngClass]="{'main-menu-suscripcion-icon': card.icon === 'crown'}"></lucide-icon>
+        </div>
+        <div class="profile__main-menu-label">{{ card.title }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="profile__prefs">
+    <h3>Preferencias</h3>
+    <ul>
+      <li *ngFor="let item of prefs" (click)="navigateToPref(item)" [tabindex]="item.path ? 0 : -1" [style.cursor]="item.path ? 'pointer' : 'default'">
+        <lucide-icon [name]="item.icon" [strokeWidth]="1" class="profile__prefs-icon"></lucide-icon>
+        <span>{{ item.label }}</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="profile__activity">
+    <h3>Actividad</h3>
+    <ul>
+      <li *ngFor="let item of activity" (click)="navigateToActivity(item)" [tabindex]="item.path ? 0 : -1" [style.cursor]="item.path ? 'pointer' : 'default'">
+        <lucide-icon [name]="item.icon" [strokeWidth]="1" class="profile__prefs-icon"></lucide-icon>
+        <span>{{ item.label }}</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="profile__other">
+    <ul>
+      <li *ngFor="let item of other" [class.danger]="item.danger">
+        <lucide-icon [name]="item.icon" [strokeWidth]="1" class="profile__prefs-icon"></lucide-icon>
+        <span>{{ item.label }}</span>
+      </li>
+    </ul>
+  </section>
+
+</section>

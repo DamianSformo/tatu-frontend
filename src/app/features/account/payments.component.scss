@@ -1,0 +1,577 @@
+@import '../../../_variables.scss';
+
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+
+.pay {
+  padding: 1.5rem 5% 3rem;
+  background: $background-color;
+  color: $text-color;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  position: relative;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin-bottom: 95px;
+  min-height: 100vh;
+}
+
+.pay__top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-color;
+    line-height: 1.2;
+  }
+
+  p {
+    margin: 0;
+    color: $primary-color;
+    font-size: 0.95rem;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+}
+
+.pay__back {
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+  margin-bottom: 0.6rem;
+  color: $primary-color;
+  font-weight: 600;
+
+  ::ng-deep lucide-icon svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke-width: 2.5 !important;
+  }
+}
+
+.pay__list {
+  display: grid;
+  gap: $spacing-md;
+}
+
+.pay__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem 1.2rem 1.25rem 1.2rem;
+  border-radius: $border-radius;
+  background: $background-color;
+  border: 1px solid rgba($primary-color, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.08);
+  }
+}
+
+.pay__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: $secondary-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary-color;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+
+  lucide-icon {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke-width: 2;
+    }
+  }
+}
+
+.pay__text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pay__alias {
+  margin: 0 0 0.15rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $text-color;
+}
+
+.pay__number {
+  margin: 0;
+  color: $primary-color;
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+.pay__tag {
+  display: inline-block;
+  background: $accent-color;
+  color: #fff;
+  padding: 0.25rem 0.8rem;
+  border-radius: $border-radius;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-top: 0.4rem;
+  align-self: flex-start;
+}
+
+.pay__chevron {
+  color: $primary-color;
+  opacity: 0.3;
+
+  lucide-icon {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke-width: 3;
+    }
+  }
+}
+
+.pay__empty {
+  color: $primary-color;
+  opacity: 0.6;
+  text-align: center;
+  padding: $spacing-lg;
+}
+
+.pay__card {
+  background: $background-color;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  padding: 1.25rem 1.35rem;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  display: grid;
+  gap: $spacing-md;
+  margin-top: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: $spacing-md;
+}
+
+label.float-label {
+  position: relative;
+  display: block;
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    line-height: 1.5;
+    background: $secondary-color;
+    border: none;
+    border-radius: $border-radius;
+    transition: padding 0.2s ease, box-shadow 0.2s ease;
+    color: $text-color;
+    font-size: 1rem;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:focus,
+    &:not(:placeholder-shown) {
+      padding: 22px 16px 6px;
+      box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
+      outline: none;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  span {
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    font-size: 1rem;
+    color: $primary-color;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  input:focus + span,
+  input:not(:placeholder-shown) + span {
+    top: 6px;
+    font-size: 0.75rem;
+    color: $primary-color;
+    opacity: 0.7;
+    font-weight: 500;
+  }
+}
+
+.checkbox-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  border: none;
+  border-radius: $border-radius;
+  background: $secondary-color;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba($primary-color, 0.06);
+  }
+
+  input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 1rem;
+    color: $text-color;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  &.dual {
+    justify-content: space-between;
+  }
+}
+
+.primary,
+.secondary {
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.875rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary {
+  background: $accent-color;
+  color: #fff;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba($accent-color, 0.3);
+    transform: translateY(-1px);
+  }
+}
+
+.secondary {
+  background: $secondary-color;
+  color: $text-color;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba($primary-color, 0.08);
+    transform: translateY(-1px);
+  }
+}
+
+.pay__add {
+  position: sticky;
+  bottom: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: $border-radius;
+  padding: 1rem 1.1rem;
+  background: $accent-color;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 12px 28px rgba($accent-color, 0.35);
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .pay {
+    padding: 1.25rem 1rem 2.25rem;
+  }
+}.pay {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 2rem 1.25rem 3rem;
+  color: #0f172a;
+  display: grid;
+  gap: 1rem;
+}
+
+.pay__top {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.pay__top h1 {
+  margin: 0;
+  font-size: 1.9rem;
+}
+
+.pay__top p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 1.05rem;
+}
+
+.pay__back {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  margin-bottom: 0.65rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.pay__list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pay__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 0.65rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #ede9fe;
+  box-shadow: 0 12px 28px rgba(76, 29, 149, 0.08);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.pay__item:hover,
+.pay__item:focus {
+  transform: translateY(-2px);
+  border-color: #c4b5fd;
+  box-shadow: 0 14px 32px rgba(76, 29, 149, 0.12);
+}
+
+.pay__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #eef2ff;
+  display: grid;
+  place-items: center;
+  color: #4c1d95;
+}
+
+.pay__alias {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pay__number {
+  margin: 0.1rem 0;
+  color: #4b5563;
+}
+
+.pay__tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #4c1d95;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.pay__chevron {
+  color: #6b7280;
+}
+
+.pay__empty {
+  color: #6b7280;
+}
+
+.pay__card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+label.float-label {
+  position: relative;
+  display: block;
+}
+
+label.float-label input {
+  width: 100%;
+  padding: 14px 12px;
+  line-height: 1.4;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  transition: padding 0.15s ease;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:focus,
+  &:not(:placeholder-shown) {
+    padding: 24px 12px 8px;
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+}
+
+label.float-label span {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.15s ease;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+label.float-label input:focus + span,
+label.float-label input:not(:placeholder-shown) + span {
+  top: 4px;
+  font-size: 11px;
+  color: #444;
+  opacity: 1;
+}
+
+.checkbox-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.checkbox-row input {
+  width: auto;
+  margin: 0;
+}
+
+.checkbox-row span {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.actions.dual {
+  justify-content: space-between;
+}
+
+.primary,
+.secondary {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.primary {
+  background: #7c3aed;
+  color: #fff;
+  border-color: #7c3aed;
+
+  &:hover {
+    box-shadow: 0 10px 22px rgba(124, 58, 237, 0.2);
+    transform: translateY(-1px);
+  }
+}
+
+.secondary {
+  background: #fff;
+  color: #111;
+
+  &:hover {
+    border-color: #c4b5fd;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+}
+
+.pay__add {
+  position: sticky;
+  bottom: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  background: #7c3aed;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  box-shadow: 0 12px 28px rgba(124, 58, 237, 0.35);
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .pay {
+    padding: 1.5rem 1rem 2.25rem;
+  }
+}

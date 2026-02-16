@@ -1,0 +1,139 @@
+@import '../../../_variables.scss';
+
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+
+.coupons {
+  padding: 1.5rem 5%;
+  background: $background-color;
+  color: $text-color;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  position: relative;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin-bottom: 95px;
+  overflow-y: auto;
+}
+
+.coupons__list {
+  width: min(420px, 100%);
+}
+
+.coupon-card {
+  position: relative;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  padding: 1.8rem 1.65rem 1.5rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.coupon-card.redeemed {
+  opacity: 0.65;
+}
+
+.coupon-card__badge {
+  color: #c1121f;
+  display: grid;
+  place-items: center;
+
+  lucide-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+}
+
+.coupon-card__heading {
+  display: grid;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.coupon-card__title {
+  margin: 0;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.coupon-card__subtitle {
+  margin: 0;
+  color: #575757;
+  font-size: 0.98rem;
+}
+
+.coupon-card__meta {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.coupon-card__meta-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 0.8rem;
+  align-items: center;
+  color: #161616;
+}
+
+.coupon-card__meta-label {
+  display: block;
+  color: #6c6c6c;
+  font-size: 0.92rem;
+}
+
+.coupon-card__meta-value {
+  display: block;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #111111;
+}
+
+.coupon-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.coupon-card__validity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #b91c1c;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.coupon-card__apply {
+  background: #c1121f;
+  color: #ffffff;
+  border: none;
+  border-radius: 0px;
+  padding: 0.55rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  cursor: pointer;
+}
+
+
+
+@media (max-width: 520px) {
+  .coupons {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .coupon-card {
+    padding: 1.5rem;
+  }
+}

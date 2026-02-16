@@ -30,7 +30,7 @@
 
       <!-- Eliminar -->
       <button class="remove-btn" (click)="removeItem(item.product.id)" title="Eliminar del carrito">
-        <span class="material-symbols-sharp">close</span>
+        <lucide-icon name="x"></lucide-icon>
       </button>
     </div>
 
@@ -39,6 +39,20 @@
       <div class="summary-row">
         <span>Subtotal:</span>
         <span class="amount">${{ getSubtotal() | number:'1.0-0' }}</span>
+      </div>
+      <div class="summary-row coupon-row" *ngIf="appliedCoupon">
+        <div class="coupon-info">
+          <span class="label">Cupón</span>
+          <div class="coupon-chip">
+            <span class="code">{{ appliedCoupon.code }}</span>
+            <span class="detail" *ngIf="appliedCoupon.title">{{ appliedCoupon.title }}</span>
+          </div>
+        </div>
+        <button class="remove-coupon" type="button" (click)="removeCoupon()">Quitar</button>
+      </div>
+      <div class="summary-row" *ngIf="getDiscount() > 0">
+        <span>Descuento:</span>
+        <span class="amount discount">- ${{ getDiscount() | number:'1.0-0' }}</span>
       </div>
       <div class="summary-row">
         <span>
@@ -56,6 +70,18 @@
     </div>
 
     <!-- Botón de checkout -->
-    <button class="checkout-btn">Ir al Carrito Completo</button>
+    <button class="checkout-btn" (click)="goToCheckout()">Continuar</button>
+  </div>
+</div>
+
+<!-- Popup de decisión de checkout -->
+<div *ngIf="showCheckoutPrompt" class="checkout-overlay" (click)="closePrompt()"></div>
+<div *ngIf="showCheckoutPrompt" class="checkout-sheet" (click)="$event.stopPropagation()">
+  <button class="sheet-close" (click)="closePrompt()" aria-label="Cerrar">×</button>
+  <h3>¿Cómo querés continuar?</h3>
+  <p>Iniciá sesión para guardar tu compra o seguí como invitado.</p>
+  <div class="sheet-actions">
+    <button class="primary" (click)="startLogin()">Iniciar sesión</button>
+    <button class="secondary" (click)="proceedAsGuest()">Seguir como invitado</button>
   </div>
 </div>

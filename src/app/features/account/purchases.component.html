@@ -1,0 +1,47 @@
+<section class="purchases">
+  <header class="purchases__top">
+    <button class="purchases__back" routerLink="/perfil">
+      <lucide-icon name="arrow-left"></lucide-icon>
+    </button>
+    <h1>Mis compras</h1>
+    <span>Revisa el estado y detalle de tus pedidos.</span>
+  </header>
+
+  <section class="purchases__list" *ngIf="purchases.length > 0">
+    <article
+      class="purchases__item"
+      *ngFor="let p of purchases"
+      (click)="viewDetail(p)"
+    >
+      <div class="purchases__icon">
+        <lucide-icon name="shopping-bag"></lucide-icon>
+      </div>
+
+      <div class="purchases__text">
+        <div class="purchases__row">
+          <p class="purchases__id">{{ p.id }}</p>
+          <span class="purchases__status" [ngClass]="statusClass(p.status)">
+            {{ p.statusLabel }}
+          </span>
+        </div>
+
+        <p class="purchases__meta">
+          {{ p.date }} · {{ p.items }} artículo{{ p.items === 1 ? '' : 's' }} · ${{ p.total | number: '1.0-0' }}
+        </p>
+
+        <p class="purchases__eta" *ngIf="p.eta">{{ p.eta }}</p>
+        <p class="purchases__address">{{ p.address }}</p>
+        <p class="purchases__payment" *ngIf="p.payment">Pagaste con {{ p.payment }}</p>
+      </div>
+
+      <div class="purchases__actions">
+        <button type="button" class="ghost">Ver detalle</button>
+        <lucide-icon class="purchases__chevron" name="chevron-right"></lucide-icon>
+      </div>
+    </article>
+  </section>
+
+  <div class="purchases__empty" *ngIf="purchases.length === 0">
+    <p>No registramos compras aún.</p>
+  </div>
+</section>
